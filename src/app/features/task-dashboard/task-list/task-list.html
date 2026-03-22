@@ -1,0 +1,53 @@
+<div class="card-custom mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="mb-0">Project List</h5>
+    <button class="btn btn-sm btn-outline-primary" (click)="loadProjects()">Refresh</button>
+  </div>
+
+  @if (isLoading()) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="text-muted mt-2 small">Fetching projects...</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="alert alert-danger py-2 small">{{ errorMessage() }}</div>
+  } @else if (projects().length === 0) {
+    <div class="text-center py-5">
+      <p class="text-muted small italic">No projects found. Create one to get started!</p>
+    </div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-dark table-hover mb-0 custom-table">
+        <thead>
+          <tr class="text-muted small uppercase">
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (project of projects(); track project.id) {
+            <tr>
+              <td>
+                <div class="project-title">{{ project.title }}</div>
+                <div class="text-muted smaller">{{ project.description }}</div>
+              </td>
+              <td><span class="artist-tag">{{ project.artistName }}</span></td>
+              <td>
+                <span class="badge-modern" [ngClass]="getStatusClass(project.status)">
+                  {{ project.status }}
+                </span>
+              </td>
+              <td class="small">{{ project.deadline | date:'mediumDate' }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-icon"><i class="bi bi-three-dots"></i></button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

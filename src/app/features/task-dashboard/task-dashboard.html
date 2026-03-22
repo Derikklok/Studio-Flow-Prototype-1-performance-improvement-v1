@@ -7,6 +7,14 @@
     <button class="btn btn-outline-danger btn-sm" (click)="logout()">Logout</button>
   </div>
 
+  <!-- Header with Create Action -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">Active Projects</h4>
+    <button class="btn btn-primary-custom" (click)="showCreateDialog.set(true)">
+      + Create Project
+    </button>
+  </div>
+
   <div class="row g-4">
     <!-- User Profile Summary -->
     <div class="col-md-4">
@@ -56,5 +64,15 @@
     <div class="mt-4 small text-muted italic">
       <i class="opacity-50">System Message: {{ user()?.message }}</i>
     </div>
+  }
+
+  <!-- Components -->
+  <app-task-list #taskList></app-task-list>
+
+  @if (showCreateDialog()) {
+    <app-create-task-dialog 
+      (close)="showCreateDialog.set(false)"
+      (projectCreated)="onProjectCreated(taskList)"
+    ></app-create-task-dialog>
   }
 </div>

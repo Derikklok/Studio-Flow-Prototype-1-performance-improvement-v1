@@ -1,0 +1,81 @@
+<div class="modal-backdrop-custom d-flex align-items-center justify-content-center px-3">
+  <div class="card-custom shadow-lg w-100 modal-container" style="max-width: 550px; border-color: var(--primary-glow);">
+    <div class="d-flex justify-content-between align-items-center mb-4 pt-1">
+      <h4 class="mb-0">New Project</h4>
+      <button class="btn-close btn-close-white" (click)="close.emit()"></button>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger py-2 small mb-3">{{ errorMessage() }}</div>
+    }
+
+    <form (ngSubmit)="onSubmit()" #projectForm="ngForm">
+      <div class="mb-3">
+        <label class="form-label text-muted small">Project Title</label>
+        <input 
+          type="text" 
+          class="form-control bg-dark text-light border-secondary" 
+          name="title" 
+          [(ngModel)]="projectData.title" 
+          required
+        >
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-muted small">Artist Name</label>
+        <input 
+          type="text" 
+          class="form-control bg-dark text-light border-secondary" 
+          name="artistName" 
+          [(ngModel)]="projectData.artistName" 
+          required
+        >
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-muted small">Description</label>
+        <textarea 
+          class="form-control bg-dark text-light border-secondary" 
+          name="description" 
+          rows="2"
+          [(ngModel)]="projectData.description"
+        ></textarea>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <div class="col-6">
+          <label class="form-label text-muted small">Deadline</label>
+          <input 
+            type="date" 
+            class="form-control bg-dark text-light border-secondary" 
+            name="deadline" 
+            [(ngModel)]="projectData.deadline"
+          >
+        </div>
+        <div class="col-6">
+          <label class="form-label text-muted small">Target Release</label>
+          <input 
+            type="date" 
+            class="form-control bg-dark text-light border-secondary" 
+            name="release" 
+            [(ngModel)]="projectData.targetReleaseDate"
+          >
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 justify-content-end">
+        <button type="button" class="btn btn-outline-secondary px-4" (click)="close.emit()">Cancel</button>
+        <button 
+          type="submit" 
+          class="btn btn-primary-custom px-4" 
+          [disabled]="!projectForm.form.valid || isLoading()"
+        >
+          @if (isLoading()) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+          }
+          Create Project
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

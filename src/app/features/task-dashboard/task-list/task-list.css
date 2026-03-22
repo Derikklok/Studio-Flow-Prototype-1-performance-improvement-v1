@@ -1,0 +1,37 @@
+.project-row {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease;
+}
+
+.project-row:hover {
+  background-color: var(--card-hover);
+}
+
+.project-title {
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.artist-tag {
+  color: var(--primary-color);
+  font-size: 0.85rem;
+  background: var(--primary-glow);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.custom-table th {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-bottom: 1rem;
+}
+
+.empty-state {
+  border: 2px dashed var(--border-color);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+}
