@@ -1,0 +1,114 @@
+<div class="modal-backdrop-custom d-flex align-items-center justify-content-center px-3">
+  <div class="card-custom shadow-lg w-100 modal-container p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex align-items-center gap-3">
+        <div class="p-2 rounded-3 bg-primary-glow">
+          <i class="bi bi-music-note-list text-primary-custom fs-4"></i>
+        </div>
+        <div>
+          <h4 class="mb-0 text-white fw-bold">Add New Sample</h4>
+          <p class="text-muted small mb-0 spacing-1 uppercase">Media Asset Intake</p>
+        </div>
+      </div>
+      <button class="btn-close btn-close-white" (click)="close.emit()"></button>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger py-2 small mb-4 border-0 rounded-3 d-flex align-items-center gap-2">
+        <i class="bi bi-exclamation-triangle"></i>
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()" #sampleForm="ngForm">
+      <!-- Title -->
+      <div class="mb-3">
+        <label class="form-label text-muted small uppercase">Asset Title</label>
+        <div class="input-icon-group">
+          <i class="bi bi-type"></i>
+          <input 
+            type="text" 
+            class="form-control bg-dark border-white border-opacity-10 text-white" 
+            name="title" 
+            [(ngModel)]="sampleData.title"
+            placeholder="e.g. Smooth Rock Chorus"
+            required
+            #title="ngModel"
+          >
+        </div>
+        @if (title.invalid && title.touched) {
+          <div class="text-danger smaller mt-1 italic">Title is required for library registry</div>
+        }
+      </div>
+
+      <!-- Recording Artist -->
+      <div class="mb-3">
+        <label class="form-label text-muted small uppercase">Recording Artist</label>
+        <div class="input-icon-group">
+          <i class="bi bi-person-circle"></i>
+          <input 
+            type="text" 
+            class="form-control bg-dark border-white border-opacity-10 text-white" 
+            name="sourceArtist" 
+            [(ngModel)]="sampleData.sourceArtist"
+            placeholder="e.g. Rock Kolsy"
+          >
+        </div>
+      </div>
+
+      <!-- Original Master -->
+      <div class="mb-3">
+        <label class="form-label text-muted small uppercase">Original Master</label>
+        <div class="input-icon-group">
+          <i class="bi bi-vinyl-fill"></i>
+          <input 
+            type="text" 
+            class="form-control bg-dark border-white border-opacity-10 text-white" 
+            name="sourceTrack" 
+            [(ngModel)]="sampleData.sourceTrack"
+            placeholder="e.g. Blue Horizon"
+          >
+        </div>
+      </div>
+
+      <!-- Rights Clearance -->
+      <div class="mb-4">
+        <label class="form-label text-muted small uppercase">Rights Clearance</label>
+        <div class="input-icon-group">
+          <i class="bi bi-shield-check"></i>
+          <input 
+            type="text" 
+            class="form-control bg-dark border-white border-opacity-10 text-white" 
+            name="rightsHolder" 
+            [(ngModel)]="sampleData.rightsHolder"
+            placeholder="e.g. Rocksrty Masters LLC"
+          >
+        </div>
+      </div>
+
+      <div class="d-flex gap-3 pt-2">
+        <button 
+          type="button" 
+          class="btn btn-outline-light px-4 flex-grow-1" 
+          (click)="close.emit()"
+          [disabled]="isLoading()"
+        >
+          Cancel
+        </button>
+        <button 
+          type="submit" 
+          class="btn btn-primary-custom px-5 flex-grow-1 d-flex align-items-center justify-content-center gap-2"
+          [disabled]="!sampleForm.form.valid || isLoading()"
+        >
+          @if (isLoading()) {
+            <span class="spinner-border spinner-border-sm"></span>
+            Processing...
+          } @else {
+            <i class="bi bi-plus-lg"></i>
+            Register Asset
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

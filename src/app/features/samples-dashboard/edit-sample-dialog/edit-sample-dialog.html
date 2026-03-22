@@ -1,0 +1,130 @@
+<div class="modal-backdrop-custom d-flex align-items-center justify-content-center px-3">
+  <div class="card-custom shadow-lg w-100 modal-container p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex align-items-center gap-3">
+        <div class="p-2 rounded-3 bg-primary-glow">
+          <i class="bi bi-pencil-square text-primary-custom fs-4"></i>
+        </div>
+        <div>
+          <h4 class="mb-0 text-white fw-bold">Modify Manifest</h4>
+          <p class="text-muted small mb-0 spacing-1 uppercase">Update Asset Metadata</p>
+        </div>
+      </div>
+      <button class="btn-close btn-close-white" (click)="close.emit()" [disabled]="isLoading()"></button>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger py-2 small mb-4 border-0 rounded-3 d-flex align-items-center gap-2">
+        <i class="bi bi-exclamation-triangle"></i>
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()" #editForm="ngForm">
+      <!-- Title -->
+      <div class="mb-3">
+        <label class="form-label text-muted small uppercase">Asset Title</label>
+        <div class="input-icon-group">
+          <i class="bi bi-type"></i>
+          <input 
+            type="text" 
+            class="form-control bg-dark border-white border-opacity-10 text-white" 
+            name="title" 
+            [(ngModel)]="editData.title"
+            placeholder="Asset title"
+            required
+            #title="ngModel"
+          >
+        </div>
+      </div>
+
+      <!-- Status Selection -->
+      <div class="mb-3">
+        <label class="form-label text-muted small uppercase">Production Status</label>
+        <div class="input-icon-group">
+          <i class="bi bi-activity"></i>
+          <select 
+            class="form-select bg-dark border-white border-opacity-10 text-white" 
+            name="status" 
+            [(ngModel)]="editData.status"
+            required
+          >
+            <option value="DRAFT">DRAFT</option>
+            <option value="PENDING_CLEARENCE">PENDING CLEARANCE</option>
+            <option value="APPROVED">APPROVED</option>
+            <option value="REJECTED">REJECTED</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Recording Artist -->
+      <div class="mb-3">
+        <label class="form-label text-muted small uppercase">Recording Artist</label>
+        <div class="input-icon-group">
+          <i class="bi bi-person-circle"></i>
+          <input 
+            type="text" 
+            class="form-control bg-dark border-white border-opacity-10 text-white" 
+            name="sourceArtist" 
+            [(ngModel)]="editData.sourceArtist"
+            placeholder="Artist name"
+          >
+        </div>
+      </div>
+
+      <!-- Original Master -->
+      <div class="mb-3">
+        <label class="form-label text-muted small uppercase">Original Master</label>
+        <div class="input-icon-group">
+          <i class="bi bi-vinyl-fill"></i>
+          <input 
+            type="text" 
+            class="form-control bg-dark border-white border-opacity-10 text-white" 
+            name="sourceTrack" 
+            [(ngModel)]="editData.sourceTrack"
+            placeholder="Track name"
+          >
+        </div>
+      </div>
+
+      <!-- Rights Clearance -->
+      <div class="mb-4">
+        <label class="form-label text-muted small uppercase">Rights Clearance</label>
+        <div class="input-icon-group">
+          <i class="bi bi-shield-check"></i>
+          <input 
+            type="text" 
+            class="form-control bg-dark border-white border-opacity-10 text-white" 
+            name="rightsHolder" 
+            [(ngModel)]="editData.rightsHolder"
+            placeholder="Rights holder"
+          >
+        </div>
+      </div>
+
+      <div class="d-flex gap-3 pt-2">
+        <button 
+          type="button" 
+          class="btn btn-outline-light px-4 flex-grow-1" 
+          (click)="close.emit()"
+          [disabled]="isLoading()"
+        >
+          Cancel
+        </button>
+        <button 
+          type="submit" 
+          class="btn btn-primary-custom px-5 flex-grow-1 d-flex align-items-center justify-content-center gap-2"
+          [disabled]="!editForm.form.valid || isLoading()"
+        >
+          @if (isLoading()) {
+            <span class="spinner-border spinner-border-sm"></span>
+            Syncing...
+          } @else {
+            <i class="bi bi-check2-all"></i>
+            Apply Changes
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

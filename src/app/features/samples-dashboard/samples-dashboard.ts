@@ -3,11 +3,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SampleService } from '../../core/services/sample-service';
 import { SampleResponse } from '../../core/models/sample-response.model';
+import { AddSampleDialog } from './add-sample-dialog/add-sample-dialog';
 
 @Component({
   selector: 'app-samples-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, DatePipe],
+  imports: [CommonModule, RouterLink, DatePipe, AddSampleDialog],
   templateUrl: './samples-dashboard.html',
   styleUrl: './samples-dashboard.css',
 })
@@ -19,6 +20,7 @@ export class SamplesDashboard implements OnInit {
   protected samples = signal<SampleResponse[]>([]);
   protected isLoading = signal(true);
   protected errorMessage = signal<string | null>(null);
+  protected showAddDialog = signal(false);
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -45,6 +47,11 @@ export class SamplesDashboard implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  onSampleAdded() {
+    const id = this.projectId();
+    if (id) this.loadSamples(id);
   }
 
   getStatusClass(status: string): string {

@@ -3,11 +3,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { SampleService } from '../../../core/services/sample-service';
 import { SampleResponse } from '../../../core/models/sample-response.model';
+import { EditSampleDialog } from '../edit-sample-dialog/edit-sample-dialog';
 
 @Component({
   selector: 'app-sample-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe],
+  imports: [CommonModule, RouterModule, DatePipe, EditSampleDialog],
   template: `
     <div class="samples-page pt-4">
       <nav class="action-navbar fixed-top">
@@ -95,13 +96,21 @@ import { SampleResponse } from '../../../core/models/sample-response.model';
                   <button class="btn btn-primary-custom px-5 flex-grow-1 flex-md-grow-0 d-flex align-items-center justify-content-center gap-2">
                     <i class="bi bi-cloud-download"></i> Download Original
                   </button>
-                  <button class="btn btn-outline-light px-4 d-flex align-items-center justify-content-center gap-2">
+                  <button class="btn btn-outline-light px-4 d-flex align-items-center justify-content-center gap-2" (click)="openEditDialog()">
                     <i class="bi bi-pencil-square"></i> Modify Manifest
                   </button>
                 </div>
               </div>
             </div>
           </div>
+
+          @if (isEditModalOpen()) {
+            <app-edit-sample-dialog 
+              [sample]="s" 
+              (close)="closeEditDialog()"
+              (sampleUpdated)="onSampleUpdated()">
+            </app-edit-sample-dialog>
+          }
         }
       </div>
     </div>
@@ -125,6 +134,7 @@ export class SampleDetails implements OnInit {
 
   sample = signal<SampleResponse | null>(null);
   isLoading = signal(true);
+  isEditModalOpen = signal(false);
   errorMessage = signal<string | null>(null);
 
   ngOnInit() {
@@ -165,9 +175,27 @@ export class SampleDetails implements OnInit {
   getStatusClass(status: string) {
     switch (status) {
       case 'DRAFT': return 'bg-warning text-dark';
-      case 'CLEARED': return 'bg-success text-white';
+      case 'PENDING_CLEARANCE': return 'bg-info text-dark';
+      case 'APPROVED': return 'bg-success text-white';
       case 'REJECTED': return 'bg-danger text-white';
+      case 'CLEARED': return 'bg-success text-white';
       default: return 'bg-secondary text-white';
+    }
+  }
+
+  openEditDialog() {
+    this.isEditModalOpen.set(true);
+  }
+
+  closeEditDialog() {
+    this.isEditModalOpen.set(false);
+  }
+
+  onSampleUpdated() {
+    this.isEditModalOpen.set(false);
+    const currentSample = this.sample();
+    if (currentSample) {
+      this.loadSample(currentSample.id);
     }
   }
 }

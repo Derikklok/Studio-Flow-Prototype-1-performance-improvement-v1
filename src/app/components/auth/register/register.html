@@ -1,86 +1,117 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-5">
-      <div class="card-custom">
-        <h2 class="text-center mb-4">Create Account</h2>
-        
-        @if (errorMessage()) {
-          <div class="alert alert-danger mb-3 py-2">
-            {{ errorMessage() }}
-          </div>
-        }
-
-        <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
-          <div class="mb-3">
-            <label for="name" class="form-label text-muted small">Full Name</label>
-            <input 
-              type="text" 
-              class="form-control bg-dark text-light border-secondary" 
-              id="name" 
-              name="name"
-              [(ngModel)]="userDetails.name"
-              #name="ngModel"
-              required
-            >
-          </div>
-
-          <div class="mb-3">
-            <label for="email" class="form-label text-muted small">Email Address</label>
-            <input 
-              type="email" 
-              class="form-control bg-dark text-light border-secondary" 
-              id="email" 
-              name="email"
-              [(ngModel)]="userDetails.email"
-              required
-              email
-              #email="ngModel"
-            >
+<div class="auth-page d-flex align-items-center justify-content-center">
+  <div class="auth-overlay"></div>
+  
+  <div class="container position-relative z-1">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-10">
+        <div class="auth-card p-5 rounded-4 shadow-lg border border-white border-opacity-10">
+          <div class="text-center mb-5">
+            <div class="auth-brand mb-3">
+              <i class="bi bi-shield-check text-primary-custom"></i>
+            </div>
+            <h2 class="fw-bold text-white mb-1">Initialize Access</h2>
+            <p class="text-muted small uppercase spacing-2">Production Network Enrollment</p>
           </div>
           
-          <div class="mb-3">
-            <label for="password" class="form-label text-muted small">Password</label>
-            <input 
-              type="password" 
-              class="form-control bg-dark text-light border-secondary" 
-              id="password" 
-              name="password"
-              [(ngModel)]="userDetails.password"
-              required
-              minlength="6"
-              #password="ngModel"
+          @if (errorMessage()) {
+            <div class="alert alert-danger-custom mb-4 animate-shake">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+            <div class="row g-4 mb-4">
+              <div class="col-md-6">
+                <label class="form-label-custom">Full Name</label>
+                <div class="input-icon-group">
+                  <i class="bi bi-person-badge"></i>
+                  <input 
+                    type="text" 
+                    class="form-control-custom" 
+                    name="name" 
+                    [(ngModel)]="userDetails.name" 
+                    required 
+                    placeholder="Enter full name"
+                  >
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Work Email</label>
+                <div class="input-icon-group">
+                  <i class="bi bi-envelope-at"></i>
+                  <input 
+                    type="email" 
+                    class="form-control-custom" 
+                    name="email" 
+                    [(ngModel)]="userDetails.email" 
+                    required 
+                    email
+                    placeholder="name@soundwave.pro"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+              <div class="col-md-6">
+                <label class="form-label-custom">Security Key</label>
+                <div class="input-icon-group">
+                  <i class="bi bi-shield-lock"></i>
+                  <input 
+                    type="password" 
+                    class="form-control-custom" 
+                    name="password" 
+                    [(ngModel)]="userDetails.password" 
+                    required 
+                    minlength="6"
+                    placeholder="Min. 6 chars"
+                  >
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Production Role</label>
+                <div class="input-icon-group">
+                  <i class="bi bi-briefcase"></i>
+                  <select 
+                    class="form-control-custom" 
+                    name="role" 
+                    [(ngModel)]="userDetails.role" 
+                    required
+                  >
+                    <option value="" disabled>Select role</option>
+                    <option value="Producer">Producer</option>
+                    <option value="Admin">Admin</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              class="btn-auth-primary w-100 py-3 rounded-pill mb-4 d-flex align-items-center justify-content-center gap-2"
+              [disabled]="!registerForm.form.valid || isLoading()"
             >
+              @if (isLoading()) {
+                <span class="spinner-border spinner-border-sm"></span>
+                Processing Enrollment...
+              } @else {
+                <i class="bi bi-person-plus-fill"></i> Create Production Account
+              }
+            </button>
+          </form>
+
+          <div class="text-center">
+            <p class="text-muted small mb-0">
+              Already enrolled? <a routerLink="/login" class="text-primary-custom text-decoration-none fw-bold hover-glow">Login to Studio</a>
+            </p>
           </div>
-
-          <div class="mb-4">
-            <label for="role" class="form-label text-muted small">Role</label>
-            <select 
-              class="form-select bg-dark text-light border-secondary" 
-              id="role" 
-              name="role"
-              [(ngModel)]="userDetails.role"
-              required
-            >
-              <option value="Producer">Producer</option>
-              <option value="Admin">Admin</option>
-            </select>
-          </div>
-
-          <button 
-            type="submit" 
-            class="btn btn-primary-custom w-100 mb-3"
-            [disabled]="!registerForm.form.valid || isLoading()"
-          >
-            @if (isLoading()) {
-              <span class="spinner-border spinner-border-sm me-2"></span>
-            }
-            Register
-          </button>
-        </form>
-
-        <div class="text-center small">
-          <span class="text-muted">Already have an account? </span>
-          <a routerLink="/login" class="text-primary text-decoration-none">Login</a>
+        </div>
+        
+        <div class="text-center mt-4">
+          <a routerLink="/" class="text-muted-hover small text-decoration-none d-inline-flex align-items-center gap-2">
+            <i class="bi bi-arrow-left"></i> Return to Perimeter
+          </a>
         </div>
       </div>
     </div>
