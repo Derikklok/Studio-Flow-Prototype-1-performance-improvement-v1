@@ -20,19 +20,35 @@
     </div>
   </nav>
 
-  <div class="container mt-5 pt-5">
-    <div class="row g-4 animate-slide-up">
+  <div class="container mt-4 pt-5">
+    <div class="row g-3 align-items-end mb-4 animate-slide-up">
       <div class="col-lg-8">
-        <h1 class="display-5 fw-bold text-white mb-2">Rights Management</h1>
-        <p class="text-muted lead mb-0">Monitor and authorize sample usage across all synchronized projects.</p>
+        <h2 class="fw-bold text-white mb-1">Rights Management</h2>
+        <p class="text-muted small mb-0">Monitor and authorize sample usage across projects.</p>
       </div>
-      <div class="col-lg-4 d-flex justify-content-lg-end align-items-center">
-        <button class="btn btn-primary-glow-action px-5 py-3 rounded-pill d-flex align-items-center gap-2" routerLink="/dashboard/samples">
-          <i class="bi bi-plus-lg fs-5"></i>
-          Initiate New Clearance
+      <div class="col-lg-4 d-flex justify-content-lg-end">
+        <button class="btn btn-primary-glow-action px-4 py-2 rounded-pill d-flex align-items-center gap-2" (click)="showInitiateDialog.set(true)">
+          <i class="bi bi-plus-lg fs-6"></i>
+          <span class="small uppercase fw-bold tracking-wider">New Clearance</span>
         </button>
       </div>
     </div>
+
+    @if (showInitiateDialog()) {
+      <app-initiate-clearance-dialog
+        [sampleId]="0"
+        (close)="showInitiateDialog.set(false)"
+        (clearanceInitiated)="loadClearances(); showInitiateDialog.set(false)"
+      ></app-initiate-clearance-dialog>
+    }
+
+    @if (showEditDialog() && selectedClearanceId()) {
+      <app-edit-clearance-dialog
+        [clearanceId]="selectedClearanceId()!"
+        (close)="showEditDialog.set(false)"
+        (clearanceUpdated)="loadClearances(); showEditDialog.set(false)"
+      ></app-edit-clearance-dialog>
+    }
 
     @if (isLoading()) {
       <div class="text-center py-5 animate-fade-in">
@@ -59,56 +75,67 @@
         </div>
       </div>
     } @else {
-      <div class="row g-4 animate-slide-up">
+      <div class="row g-3 animate-slide-up">
         @for (c of clearances(); track c.id) {
-          <div class="col-md-6 col-lg-4">
-            <div class="clearance-card p-4 rounded-4 bg-glass border border-white border-opacity-05 shadow-app hover-border overflow-hidden position-relative">
+          <div class="col-md-6 col-lg-3">
+            <div class="clearance-card p-3 rounded-4 bg-glass border border-white border-opacity-05 shadow-app hover-border overflow-hidden position-relative h-100 d-flex flex-column">
               <div class="card-glow-bg"></div>
               
-              <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-1">
-                <div class="asset-icon bg-primary-glow text-primary-custom rounded-3 p-2">
-                  <i class="bi bi-file-earmark-check fs-4"></i>
+              <div class="d-flex justify-content-between align-items-center mb-3 position-relative z-1">
+                <div class="asset-icon scale-up-hover" [ngClass]="c.isApproved ? 'bg-success-glow text-success' : 'bg-warning-glow text-warning'">
+                  <i class="bi" [ngClass]="c.isApproved ? 'bi-shield-check' : 'bi-shield-exclamation'"></i>
                 </div>
-                <span class="badge-status-modern px-3 py-1" [ngClass]="getStatusClass(c.isApproved)">
-                  {{ c.isApproved ? 'AUTHORIZED' : 'PENDING' }}
+                <span class="badge-status-modern px-2 py-0.5 animate-pulse-slow" [ngClass]="getStatusClass(c.isApproved)">
+                  {{ c.isApproved ? 'CLEARED' : 'PENDING' }}
                 </span>
               </div>
 
-              <div class="position-relative z-1">
-                <h5 class="text-white fw-bold mb-1">Ref ID: CR-{{ c.id.toString().padStart(6, '0') }}</h5>
-                <p class="text-primary-custom small fw-bold uppercase mb-3">Sample ID: #{{ c.sampleId }}</p>
-                
-                <div class="meta-row d-flex align-items-center gap-3 mb-2">
-                   <i class="bi bi-person-badge text-muted"></i>
-                   <span class="text-white-50 small">Owner:</span>
-                   <span class="text-white small fw-bold">{{ c.rightsOwner }}</span>
+              <div class="position-relative z-1 flex-grow-1">
+                <div class="d-flex align-items-center gap-1 mb-0.5">
+                  <h6 class="text-white fw-bold mb-0">CR-{{ c.id.toString().padStart(4, '0') }}</h6>
+                  @if (c.isApproved) {
+                    <i class="bi bi-patch-check-fill text-primary-custom x-small" title="Verified"></i>
+                  }
                 </div>
+                <p class="text-muted x-small fw-bold uppercase tracking-tighter mb-3 opacity-50">Log #{{ c.sampleId }}</p>
+                
+                <div class="meta-stack space-y-2 mb-3">
+                  <div class="meta-row d-flex align-items-center gap-2">
+                    <div class="meta-icon-box x-small"><i class="bi bi-person-fill"></i></div>
+                    <div class="flex-grow-1 overflow-hidden">
+                      <span class="text-white-50 x-small uppercase d-block tracking-tighter">Entity</span>
+                      <span class="text-white x-small fw-bold text-truncate d-block">{{ c.rightsOwner }}</span>
+                    </div>
+                  </div>
 
-                <div class="meta-row d-flex align-items-center gap-3 mb-2">
-                   <i class="bi bi-card-checklist text-muted"></i>
-                   <span class="text-white-50 small">License:</span>
-                   <span class="text-white small">{{ c.licenseType || 'Standard Usage' }}</span>
+                  <div class="meta-row d-flex align-items-center gap-2">
+                    <div class="meta-icon-box x-small"><i class="bi bi-key-fill"></i></div>
+                    <div class="flex-grow-1 overflow-hidden">
+                      <span class="text-white-50 x-small uppercase d-block tracking-tighter">Agreement</span>
+                      <span class="text-white x-small text-truncate d-block">{{ c.licenseType || 'Standard' }}</span>
+                    </div>
+                  </div>
                 </div>
 
                 @if (c.notes) {
-                  <div class="notes-box mt-3 p-3 rounded-3 bg-white bg-opacity-05">
-                    <p class="text-muted smaller mb-0 italic leading-relaxed">{{ c.notes }}</p>
+                  <div class="notes-container position-relative p-2 rounded-2 bg-white bg-opacity-05 border border-white border-opacity-05 mb-3">
+                    <p class="text-muted x-small mb-0 italic leading-snug line-clamp-2">{{ c.notes }}</p>
                   </div>
                 }
+              </div>
 
-                <div class="d-flex gap-2 mt-4 pt-4 border-top border-white border-opacity-05">
-                  @if (!c.isApproved) {
-                    <button class="btn btn-primary-glow-action flex-grow-1 py-2 rounded-pill small uppercase" (click)="approveClearance(c.id)">
-                      Authorize
-                    </button>
-                  }
-                  <button class="btn btn-icon-glass px-3 rounded-pill" (click)="editClearance(c.id)" title="Edit Rights">
-                    <i class="bi bi-pencil-square text-primary-custom opacity-75"></i>
+              <div class="d-flex gap-2 pt-2 border-top border-white border-opacity-05 mt-auto position-relative z-1">
+                @if (!c.isApproved) {
+                  <button class="btn btn-success-glow btn-sm flex-grow-1 py-1 rounded-pill x-small uppercase fw-bold" (click)="approveClearance(c.id)">
+                    Authorize
                   </button>
-                  <button class="btn btn-icon-glass px-3 rounded-pill" (click)="deleteClearance(c.id)" title="Purge Record">
-                    <i class="bi bi-trash3 text-danger opacity-75"></i>
-                  </button>
-                </div>
+                }
+                <button class="btn btn-icon-glass btn-sm px-2 rounded-pill" (click)="editClearance(c.id)" title="Edit">
+                  <i class="bi bi-pencil-square text-primary-custom opacity-75"></i>
+                </button>
+                <button class="btn btn-icon-glass btn-sm px-2 rounded-pill" (click)="deleteClearance(c.id)" title="Purge">
+                  <i class="bi bi-trash3 text-danger opacity-75"></i>
+                </button>
               </div>
             </div>
           </div>

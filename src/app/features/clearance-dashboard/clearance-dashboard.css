@@ -13,17 +13,63 @@
   pointer-events: none;
 }
 
-.asset-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+.asset-icon { 
+  width: 38px; height: 38px; 
+  display: flex; align-items: center; justify-content: center; 
+  border-radius: 10px;
+  font-size: 1rem;
+}
 
-.badge-status-modern { font-size: 0.65rem; font-weight: 700; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px; }
-.ST-PENDING_CLEARANCE { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
-.ST-CLEARED { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+.badge-status-modern { font-size: 0.6rem; font-weight: 700; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-.meta-row i { width: 20px; text-align: center; }
-.notes-box { font-size: 0.85rem; line-height: 1.5; }
+.meta-icon-box {
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.03);
+  border-radius: 6px;
+  color: #64748b;
+  font-size: 0.8rem;
+}
 
+.x-small { font-size: 0.7rem; }
+.meta-icon-box.x-small i { font-size: 0.75rem; }
+
+.notes-container {
+  border-left: 2px solid rgba(59, 130, 246, 0.2) !important;
+  line-height: 1.3;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+.btn-success-glow {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  transition: all 0.3s ease;
+}
+
+.btn-success-glow:hover {
+  background: rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.scale-up-hover { transition: transform 0.3s ease; }
+.clearance-card listener:hover .scale-up-hover { transform: scale(1.1); }
+
+/* Animation Overlay for Table */
 .animate-slide-up { animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
 @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
 .badge-status-pulse { width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; animation: pulse 2s infinite; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(96, 165, 250, 0); } 100% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0); } }
+
+.spacing-1 { letter-spacing: 0.1rem; }
+.tighter { letter-spacing: -0.02rem; }
+.smaller { font-size: 0.75rem; }
+.italic { font-style: italic; }

@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { ClearanceService } from '../../core/services/clearance-service';
 import { ClearanceResponse } from '../../core/models/clearance.model';
 import { EditClearanceDialog } from './edit-clearance-dialog/edit-clearance-dialog';
+import { InitiateClearanceDialog } from '../samples-dashboard/initiate-clearance-dialog/initiate-clearance-dialog';
 
 @Component({
   selector: 'app-clearance-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, EditClearanceDialog],
+  imports: [CommonModule, RouterLink, EditClearanceDialog, InitiateClearanceDialog],
   templateUrl: './clearance-dashboard.html',
   styleUrl: './clearance-dashboard.css',
 })
@@ -20,6 +21,7 @@ export class ClearanceDashboard implements OnInit {
   protected errorMessage = signal<string | null>(null);
   protected selectedClearanceId = signal<number | null>(null);
   protected showEditDialog = signal(false);
+  protected showInitiateDialog = signal(false);
 
   ngOnInit() {
     this.loadClearances();
