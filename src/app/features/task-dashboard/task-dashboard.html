@@ -1,107 +1,142 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h2 class="mb-0">Task Dashboard</h2>
-      <p class="text-muted small">Welcome back, {{ user()?.name }}</p>
+<div class="dashboard-page pt-4 pb-5">
+  <!-- Top Navigation -->
+  <nav class="action-navbar fixed-top">
+    <div class="container d-flex align-items-center justify-content-between h-100">
+      <div class="d-flex align-items-center gap-3">
+        <div class="brand-box position-relative">
+          <i class="bi bi-vinyl-fill spin-slow text-primary-custom fs-4"></i>
+          <div class="glow-dot"></div>
+        </div>
+        <h5 class="mb-0 text-white fw-bold tracking-tight">Studio Control Center</h5>
+      </div>
+      
+      <div class="d-flex align-items-center gap-3">
+        <div class="user-pill d-none d-md-flex align-items-center gap-2 px-3 py-1 rounded-pill border border-white border-opacity-10 bg-glass-dark">
+          <div class="user-avatar-sm">
+            <i class="bi bi-person-fill text-primary-custom"></i>
+          </div>
+          <span class="text-white small fw-semibold">{{ user()?.name }}</span>
+        </div>
+        <button class="btn btn-outline-danger-custom btn-sm rounded-pill px-3" (click)="logout()">
+          <i class="bi bi-power me-1"></i> Exit
+        </button>
+      </div>
     </div>
-    <button class="btn btn-outline-danger btn-sm" (click)="logout()">Logout</button>
-  </div>
+  </nav>
 
-  <!-- Header with Create Action -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="mb-0">Active Projects</h4>
-    <button class="btn btn-primary-custom" (click)="showCreateDialog.set(true)">
-      + Create Project
-    </button>
-  </div>
+  <div class="container mt-5 pt-4">
+    <!-- Summary Header -->
+    <div class="row g-4 mb-5 animate-slide-up">
+      <div class="col-lg-8">
+        <div class="welcome-banner p-4 rounded-4 bg-glass border border-white border-opacity-10 position-relative overflow-hidden">
+          <div class="position-relative z-1">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge-status-pulse"></span>
+              <span class="text-primary-custom small uppercase fw-bold spacing-2">System Online</span>
+            </div>
+            <h2 class="text-white fw-bold mb-2">Welcome Back, producer <span class="text-primary-custom">{{ user()?.name }}</span></h2>
+            <p class="text-muted max-w-500 mb-0">Manage your active production projects, coordinate studio sessions, and clear rights from one central hub.</p>
+          </div>
+          <i class="bi bi-soundwave position-absolute end-0 bottom-0 text-white opacity-05" style="font-size: 8rem; margin-right: -20px; margin-bottom: -30px;"></i>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <button class="btn btn-primary-glow-action w-100 h-100 rounded-4 d-flex flex-column align-items-center justify-content-center gap-2 py-4 shadow-app" (click)="showCreateDialog.set(true)">
+          <div class="plus-icon-box mb-1">
+            <i class="bi bi-plus-lg fs-3"></i>
+          </div>
+          <span class="fw-bold fs-6 uppercase tracking-wider">Initialize Project</span>
+        </button>
+      </div>
+    </div>
 
-  <div class="row g-4">
-    <!-- User Profile Summary -->
-    <div class="col-md-4">
-      <div class="card-custom h-100">
-        <h5 class="mb-3">Your Profile</h5>
-        <div class="mb-2">
-          <label class="text-muted small d-block">Email</label>
-          <span>{{ user()?.email }}</span>
+    <!-- Stats Grid -->
+    <div class="row g-4 mb-5 animate-slide-up-delayed">
+      <div class="col-md-4">
+        <div class="stat-card-modern p-4 rounded-4 border border-white border-opacity-10">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="stat-icon bg-warning-glow text-warning"><i class="bi bi-hourglass-split"></i></div>
+            <span class="text-muted small uppercase fw-bold">Pending</span>
+          </div>
+          <h2 class="text-white fw-bold mb-1">12</h2>
+          <p class="text-muted small mb-0">Awaiting Clearance</p>
         </div>
-        <div class="mb-2">
-          <label class="text-muted small d-block">Role</label>
-          <span class="badge" [ngClass]="user()?.role === 'Admin' ? 'bg-primary' : 'bg-info'">
-            {{ user()?.role }}
-          </span>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card-modern p-4 rounded-4 border border-white border-opacity-10">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="stat-icon bg-primary-glow text-primary-custom"><i class="bi bi-play-circle-fill"></i></div>
+            <span class="text-muted small uppercase fw-bold">Active</span>
+          </div>
+          <h2 class="text-white fw-bold mb-1">05</h2>
+          <p class="text-muted small mb-0">In Production</p>
         </div>
-        <div class="mb-2">
-          <label class="text-muted small d-block">Status</label>
-          <span class="text-success" *ngIf="user()?.isActive">● Active</span>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card-modern p-4 rounded-4 border border-white border-opacity-10">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div class="stat-icon bg-success-glow text-success"><i class="bi bi-check-all"></i></div>
+            <span class="text-muted small uppercase fw-bold">Released</span>
+          </div>
+          <h2 class="text-white fw-bold mb-1">28</h2>
+          <p class="text-muted small mb-0">Mastered Assets</p>
         </div>
       </div>
     </div>
 
-    <!-- Task Stats (Placeholder) -->
-    <div class="col-md-8">
-      <div class="card-custom h-100">
-        <h5 class="mb-3">Quick Overview</h5>
-        <div class="row text-center mt-3">
-          <div class="col-4">
-            <h3 class="mb-0">12</h3>
-            <span class="text-muted small">Pending</span>
-          </div>
-          <div class="col-4 border-start border-secondary">
-            <h3 class="mb-0">5</h3>
-            <span class="text-muted small">In Progress</span>
-          </div>
-          <div class="col-4 border-start border-secondary">
-            <h3 class="mb-0">28</h3>
-            <span class="text-muted small">Completed</span>
-          </div>
-        </div>
+    <!-- Main Content -->
+    <div class="dashboard-content animate-fade-in-delayed">
+      <div class="p-4 rounded-top-4 bg-glass-dark border border-white border-opacity-10 border-bottom-0">
+        <h5 class="mb-0 text-white fw-bold d-flex align-items-center gap-2">
+          <i class="bi bi-collection-play-fill text-primary-custom"></i>
+          Catalog Overview
+        </h5>
       </div>
+      <app-task-list 
+        #taskList 
+        (viewProject)="onViewProject($event)" 
+        (editProject)="onEditProject($event)"
+        (deleteProject)="onDeleteProject($event)"
+      ></app-task-list>
     </div>
+
+    @if (user()?.message) {
+      <div class="mt-4 p-3 rounded-3 bg-glass-dark border border-white border-opacity-05 d-flex align-items-center gap-2">
+        <i class="bi bi-info-circle text-muted small"></i>
+        <span class="text-muted small italic">System Message: {{ user()?.message }}</span>
+      </div>
+    }
+
+    <!-- Dialogs -->
+    @if (showCreateDialog()) {
+      <app-create-task-dialog 
+        (close)="showCreateDialog.set(false)"
+        (projectCreated)="onProjectCreated(taskList)"
+      ></app-create-task-dialog>
+    }
+
+    @if (selectedProjectId()) {
+      <app-view-project-dialog
+        [projectId]="selectedProjectId()!"
+        (close)="selectedProjectId.set(null)"
+      ></app-view-project-dialog>
+    }
+
+    @if (editProjectId()) {
+      <app-edit-project-dialog
+        [projectId]="editProjectId()!"
+        (close)="editProjectId.set(null)"
+        (projectUpdated)="onProjectUpdated(taskList)"
+      ></app-edit-project-dialog>
+    }
+
+    @if (deleteProjectData()) {
+      <app-confirm-delete-dialog
+        [projectId]="deleteProjectData()!.id"
+        [projectTitle]="deleteProjectData()!.title"
+        (close)="deleteProjectData.set(null)"
+        (deleted)="onProjectDeleted(taskList)"
+      ></app-confirm-delete-dialog>
+    }
   </div>
-
-  <!-- Response Message -->
-  @if (user()?.message) {
-    <div class="mt-4 small text-muted italic">
-      <i class="opacity-50">System Message: {{ user()?.message }}</i>
-    </div>
-  }
-
-  <!-- Components -->
-  <app-task-list 
-    #taskList 
-    (viewProject)="onViewProject($event)" 
-    (editProject)="onEditProject($event)"
-    (deleteProject)="onDeleteProject($event)"
-  ></app-task-list>
-
-  @if (showCreateDialog()) {
-    <app-create-task-dialog 
-      (close)="showCreateDialog.set(false)"
-      (projectCreated)="onProjectCreated(taskList)"
-    ></app-create-task-dialog>
-  }
-
-  @if (selectedProjectId()) {
-    <app-view-project-dialog
-      [projectId]="selectedProjectId()!"
-      (close)="selectedProjectId.set(null)"
-    ></app-view-project-dialog>
-  }
-
-  @if (editProjectId()) {
-    <app-edit-project-dialog
-      [projectId]="editProjectId()!"
-      (close)="editProjectId.set(null)"
-      (projectUpdated)="onProjectUpdated(taskList)"
-    ></app-edit-project-dialog>
-  }
-
-  @if (deleteProjectData()) {
-    <app-confirm-delete-dialog
-      [projectId]="deleteProjectData()!.id"
-      [projectTitle]="deleteProjectData()!.title"
-      (close)="deleteProjectData.set(null)"
-      (deleted)="onProjectDeleted(taskList)"
-    ></app-confirm-delete-dialog>
-  }
 </div>

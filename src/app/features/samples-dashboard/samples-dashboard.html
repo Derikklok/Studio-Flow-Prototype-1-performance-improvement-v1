@@ -1,45 +1,42 @@
-<div class="samples-page">
-  <!-- Action Navbar -->
-  <nav class="action-navbar sticky-top">
+<div class="samples-page pb-5">
+  <!-- Top Navigation -->
+  <nav class="action-navbar fixed-top">
     <div class="container d-flex align-items-center justify-content-between h-100">
       <div class="d-flex align-items-center gap-3">
-        <a routerLink="/dashboard" class="btn-back d-flex align-items-center text-decoration-none">
-          <i class="bi bi-arrow-left fs-5 me-2"></i>
-          <span class="d-none d-sm-inline">Back to Dashboard</span>
+        <a routerLink="/dashboard" class="btn-back-pill d-flex align-items-center text-decoration-none px-3 py-1 rounded-pill">
+          <i class="bi bi-chevron-left me-1"></i>
+          <span class="small fw-bold uppercase tracking-wider">Dashboard</span>
         </a>
-        <div class="vr bg-secondary opacity-25 mx-2 d-none d-sm-block" style="height: 24px;"></div>
-        <h5 class="mb-0 text-white fw-semibold d-none d-md-block">Project Samples</h5>
+        <div class="vr bg-white opacity-10 mx-2" style="height: 20px;"></div>
+        <h5 class="mb-0 text-white fw-bold tracking-tight d-none d-md-block">Asset Library</h5>
       </div>
       
       <div class="d-flex align-items-center gap-3">
-        <div class="search-box d-none d-lg-block">
-          <i class="bi bi-search"></i>
-          <input type="text" class="form-control form-control-sm bg-transparent border-0 text-white" placeholder="Filter samples...">
+        <div class="search-pill d-none d-lg-flex align-items-center px-3 py-1 rounded-pill bg-glass-dark border border-white border-opacity-10">
+          <i class="bi bi-search text-muted small me-2"></i>
+          <input type="text" class="form-control-plaintext form-control-sm text-white small" placeholder="Search manifest...">
         </div>
-        <button class="btn btn-primary-custom btn-sm px-4" (click)="showAddDialog.set(true)">
-          <i class="bi bi-plus-lg me-2"></i>Add Sample
+        <button class="btn btn-primary-glow-sm rounded-pill px-4 py-2" (click)="showAddDialog.set(true)">
+          <i class="bi bi-plus-lg me-2"></i>Add Asset
         </button>
       </div>
     </div>
   </nav>
 
-  <div class="container mt-4">
-    <!-- Project Context Header -->
-    <div class="project-header mb-5 p-4 rounded-4 bg-glass border border-white border-opacity-10">
-      <div class="row align-items-center">
-        <div class="col-auto">
-          <div class="project-icon-large">
-            <i class="bi bi-folder2-open text-primary-custom"></i>
+  <div class="container mt-5 pt-4">
+    <!-- Project Hero Section -->
+    <div class="row mb-5 animate-slide-up">
+      <div class="col-12">
+        <div class="project-hero p-5 rounded-4 bg-glass border border-white border-opacity-10 position-relative overflow-hidden">
+          <div class="position-relative z-1">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <i class="bi bi-folder-fill text-primary-custom"></i>
+              <span class="text-primary-custom small uppercase fw-bold spacing-2">Production Volume</span>
+            </div>
+            <h1 class="text-white fw-bold mb-2">Project <span class="text-gradient-primary">#{{ projectId() }}</span></h1>
+            <p class="text-muted max-w-600 mb-0">Reviewing synchronized media assets, clearing publishing rights, and managing production metadata for high-fidelity masters.</p>
           </div>
-        </div>
-        <div class="col">
-          <h2 class="mb-1 text-white fw-bold">Project ID: {{ projectId() }}</h2>
-          <p class="mb-0 text-muted small uppercase spacing-1">Manage and review all media assets for this project</p>
-        </div>
-        <div class="col-auto d-none d-md-block">
-          <span class="badge badge-modern bg-primary-glow text-primary-custom px-3 py-2">
-            <i class="bi bi-activity me-2"></i>Active Session
-          </span>
+          <i class="bi bi-layers-half position-absolute end-0 bottom-0 text-white opacity-05" style="font-size: 10rem; margin-right: -20px; margin-bottom: -40px;"></i>
         </div>
       </div>
     </div>
@@ -53,72 +50,89 @@
     }
 
     @if (isLoading()) {
-      <div class="text-center py-5">
-        <div class="spinner-border text-primary" role="status"></div>
-        <p class="text-muted mt-3 small italic">Initializing environment...</p>
+      <div class="text-center py-5 animate-fade-in">
+        <div class="spinner-box mb-3">
+          <div class="spinner-inner"></div>
+        </div>
+        <p class="text-muted small uppercase tracking-widest mt-3">Synchronizing Manifest...</p>
       </div>
     } @else if (errorMessage()) {
-      <div class="alert alert-danger border-0 rounded-3 py-3 px-4 shadow-sm mb-4">
-        <div class="d-flex align-items-center">
-          <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
-          <div>{{ errorMessage() }}</div>
+      <div class="alert-glass p-4 rounded-4 border border-danger border-opacity-20 bg-danger bg-opacity-05 d-flex align-items-center gap-3 mb-5">
+        <div class="alert-icon-box bg-danger text-white rounded-circle"><i class="bi bi-x-lg"></i></div>
+        <div>
+          <h6 class="text-danger fw-bold mb-1">System Error</h6>
+          <p class="text-danger opacity-75 small mb-0">{{ errorMessage() }}</p>
         </div>
       </div>
     } @else if (samples().length === 0) {
-      <div class="empty-state-large text-center py-5 rounded-4 border-2 border-dashed">
-        <i class="bi bi-music-note-list display-1 text-muted mb-4 d-block opacity-25"></i>
-        <h4 class="text-white">No samples found</h4>
-        <p class="text-muted">Start by adding your first media asset to this project.</p>
-        <button class="btn btn-primary-custom mt-3 px-4" (click)="showAddDialog.set(true)">Add Primary Sample</button>
+      <div class="empty-state-studio text-center py-5 px-4 rounded-4 border border-white border-opacity-05 bg-glass-dark">
+        <div class="empty-icon-box mb-4 mx-auto">
+          <i class="bi bi-music-note-list display-4 text-muted opacity-25"></i>
+        </div>
+        <h4 class="text-white fw-bold mb-2">No Assets Detected</h4>
+        <p class="text-muted mb-4 max-w-400 mx-auto">This project manifest is currently empty. Initialize your production by adding the first media sample.</p>
+        <button class="btn btn-primary-custom px-5 py-3 rounded-pill" (click)="showAddDialog.set(true)">
+          <i class="bi bi-plus-lg me-2"></i>Register First Sample
+        </button>
       </div>
     } @else {
-      <div class="row g-4 mb-5">
+      <div class="section-title mb-4 d-flex justify-content-between align-items-end">
+        <div>
+          <h4 class="text-white fw-bold mb-1">Manifest Overview</h4>
+          <p class="text-muted small mb-0">Showing {{ samples().length }} registered assets</p>
+        </div>
+        <div class="view-toggle d-flex gap-2">
+          <button class="btn btn-icon-glass active"><i class="bi bi-grid-fill"></i></button>
+          <button class="btn btn-icon-glass"><i class="bi bi-list-task"></i></button>
+        </div>
+      </div>
+
+      <div class="row g-4 animate-slide-up-delayed">
         @for (sample of samples(); track sample.id) {
           <div class="col-xl-4 col-md-6">
-            <div class="card-custom sample-card h-100 p-0 overflow-hidden">
-              <!-- Card Header -->
-              <div class="p-4">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                  <div class="d-flex align-items-center gap-2 overflow-hidden">
-                    <i class="bi bi-music-note-beamed fs-4 text-primary-custom flex-shrink-0"></i>
-                    <h5 class="mb-0 text-truncate fw-bold text-white px-1" [title]="sample.title">{{ sample.title }}</h5>
+            <div class="card-modern sample-card-premium h-100 overflow-hidden">
+              <div class="card-glow-bg"></div>
+              <div class="card-content-p position-relative p-4">
+                <!-- Card Top -->
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                  <div class="asset-type-icon">
+                    <i class="bi bi-vinyl-fill spin-slow text-primary-custom fs-4"></i>
                   </div>
-                  <span class="badge badge-modern {{ getStatusClass(sample.status) }} flex-shrink-0">
+                  <span class="badge-status-modern {{ getStatusClass(sample.status) }}">
                     {{ sample.status }}
                   </span>
                 </div>
                 
-                <!-- Card Body -->
-                <div class="sample-details mb-4">
-                  <div class="detail-item d-flex align-items-center gap-3 mb-2 p-2 rounded-2 hover-bg">
-                    <div class="detail-icon"><i class="bi bi-person-circle text-muted"></i></div>
-                    <div class="flex-grow-1">
-                      <div class="text-muted smaller uppercase">Artist</div>
-                      <div class="text-white small">{{ sample.sourceArtist || 'Unknown Artist' }}</div>
-                    </div>
+                <!-- Asset Info -->
+                <div class="asset-info mb-4">
+                  <h5 class="text-white fw-bold mb-1 text-truncate" [title]="sample.title">{{ sample.title }}</h5>
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="text-primary-custom small fw-bold uppercase">ID-{{ sample.id.toString().substring(0,6) }}</span>
+                    <span class="text-muted small">•</span>
+                    <span class="text-muted small italic">{{ sample.createdAt | date:'MMM d, yyyy' }}</span>
                   </div>
-                  <div class="detail-item d-flex align-items-center gap-3 mb-2 p-2 rounded-2 hover-bg">
-                    <div class="detail-icon"><i class="bi bi-vinyl-fill text-muted"></i></div>
-                    <div class="flex-grow-1">
-                      <div class="text-muted smaller uppercase">Track</div>
-                      <div class="text-white small">{{ sample.sourceTrack || 'Session Recording' }}</div>
+
+                  <div class="metadata-grid">
+                    <div class="meta-pill">
+                      <i class="bi bi-person-fill text-muted"></i>
+                      <span class="text-white-50 small text-truncate">{{ sample.sourceArtist || 'Unknown Artist' }}</span>
+                    </div>
+                    <div class="meta-pill">
+                      <i class="bi bi-soundwave text-muted"></i>
+                      <span class="text-white-50 small text-truncate">{{ sample.sourceTrack || 'Session Audio' }}</span>
                     </div>
                   </div>
                 </div>
 
-                <!-- Footer -->
-                <div class="d-flex justify-content-between align-items-center pt-3 border-top border-white border-opacity-10">
-                  <div class="text-muted smaller italic">
-                    Added {{ sample.createdAt | date:'MMM d, yyyy' }}
+                <!-- Card Actions -->
+                <div class="d-flex justify-content-between align-items-center pt-3 mt-2 border-top border-white border-opacity-05">
+                  <div class="action-group d-flex gap-1">
+                    <button class="btn btn-icon-sm-glass" title="Quick Preview"><i class="bi bi-play-fill text-success"></i></button>
+                    <button class="btn btn-icon-sm-glass" title="Metadata"><i class="bi bi-info-circle"></i></button>
                   </div>
-                  <div class="d-flex gap-2">
-                    <button class="btn btn-icon-small" title="Edit">
-                      <i class="bi bi-pencil-square"></i>
-                    </button>
-                    <button class="btn btn-outline-primary-custom btn-sm px-3" routerLink="/dashboard/samples/details" [queryParams]="{id: sample.id}">
-                      Review
-                    </button>
-                  </div>
+                  <button class="btn btn-action-inspect rounded-pill px-4 py-2" routerLink="/dashboard/samples/details" [queryParams]="{id: sample.id}">
+                    Inspect <i class="bi bi-arrow-right ms-1"></i>
+                  </button>
                 </div>
               </div>
             </div>
