@@ -2,8 +2,9 @@
   --bg-color: #0f111a;
   --card-bg: #1a1d2b;
   --card-hover: #23273a;
-  --primary-color: #38bdf8;
-  --primary-glow: rgba(56, 189, 248, 0.15);
+  --primary-color: #0ea5e9;
+  --primary-dark: #0369a1;
+  --primary-glow: rgba(14, 165, 233, 0.15);
   --accent-color: #818cf8;
   --text-main: #f1f5f9;
   --text-muted: #94a3b8;
@@ -32,20 +33,20 @@ body {
 }
 
 .btn-primary-custom {
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background-color: var(--primary-dark);
   color: #fff;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.6rem 1.2rem;
   border-radius: 10px;
   font-weight: 600;
-  box-shadow: 0 4px 14px 0 var(--primary-glow);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.4);
   transition: all 0.2s ease;
 }
 
 .btn-primary-custom:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-  box-shadow: 0 6px 20px 0 var(--primary-glow);
+  background-color: var(--primary-color);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.5);
 }
 
 .form-control, .form-select {
