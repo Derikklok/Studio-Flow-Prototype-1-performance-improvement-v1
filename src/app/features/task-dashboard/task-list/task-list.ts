@@ -47,16 +47,7 @@ export class TaskList implements OnInit {
   }
 
   protected getStatusClass(status: string): string {
-    switch (status) {
-      case 'PRE_PRODUCTION': return 'bg-info text-dark';
-      case 'RECORDING': return 'bg-primary';
-      case 'MIXING': return 'bg-warning text-dark';
-      case 'MASTERING': return 'bg-accent';
-      case 'READY_FOR_REVIEW': return 'bg-success';
-      case 'RELEASED': return 'bg-success glow-success';
-      case 'ARCHIVED': return 'bg-secondary opacity-75';
-      default: return 'bg-secondary';
-    }
+    return 'ST-' + status;
   }
 }
 

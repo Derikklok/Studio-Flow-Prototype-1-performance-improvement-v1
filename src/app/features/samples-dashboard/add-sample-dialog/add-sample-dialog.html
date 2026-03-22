@@ -1,95 +1,116 @@
-<div class="modal-backdrop-custom d-flex align-items-center justify-content-center px-3">
-  <div class="card-custom shadow-lg w-100 modal-container p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="modal-backdrop-custom d-flex align-items-center justify-content-center px-3 animate-fade-in">
+  <div class="modal-container-premium shadow-app w-100 p-4 p-md-5 position-relative overflow-hidden" 
+       style="max-width: 580px; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 17, 26, 0.95); backdrop-filter: blur(20px); border-radius: 28px;">
+    
+    <div class="card-glow-top"></div>
+
+    <div class="d-flex justify-content-between align-items-center mb-5 position-relative">
       <div class="d-flex align-items-center gap-3">
-        <div class="p-2 rounded-3 bg-primary-glow">
-          <i class="bi bi-music-note-list text-primary-custom fs-4"></i>
+        <div class="p-3 rounded-4 bg-glass border border-white border-opacity-10 shadow-sm">
+          <i class="bi bi-music-note-list text-primary-custom fs-3"></i>
         </div>
         <div>
-          <h4 class="mb-0 text-white fw-bold">Add New Sample</h4>
-          <p class="text-muted small mb-0 spacing-1 uppercase">Media Asset Intake</p>
+          <h3 class="mb-0 text-white fw-bold tracking-tight">Register Asset</h3>
+          <p class="text-muted small mb-0 uppercase tracking-widest spacing-1 opacity-75">Secure Intake Vault</p>
         </div>
       </div>
-      <button class="btn-close btn-close-white" (click)="close.emit()"></button>
+      <button class="btn-icon-glass-circle border-0 text-muted hover-white transition-all shadow-sm" (click)="close.emit()">
+        <i class="bi bi-x-lg"></i>
+      </button>
     </div>
 
     @if (errorMessage()) {
-      <div class="alert alert-danger py-2 small mb-4 border-0 rounded-3 d-flex align-items-center gap-2">
-        <i class="bi bi-exclamation-triangle"></i>
-        {{ errorMessage() }}
+      <div class="alert-glass p-3 rounded-3 border border-danger border-opacity-20 bg-danger bg-opacity-10 d-flex align-items-center gap-3 mb-4 animate-fade-in">
+        <i class="bi bi-exclamation-octagon text-danger fs-5"></i>
+        <span class="text-danger small fw-bold">{{ errorMessage() }}</span>
       </div>
     }
 
-    <form (ngSubmit)="onSubmit()" #sampleForm="ngForm">
-      <!-- Title -->
-      <div class="mb-3">
-        <label class="form-label text-muted small uppercase">Asset Title</label>
-        <div class="input-icon-group">
-          <i class="bi bi-type"></i>
-          <input 
-            type="text" 
-            class="form-control bg-dark border-white border-opacity-10 text-white" 
-            name="title" 
-            [(ngModel)]="sampleData.title"
-            placeholder="e.g. Smooth Rock Chorus"
-            required
-            #title="ngModel"
-          >
+    <form (ngSubmit)="onSubmit()" #sampleForm="ngForm" class="animate-slide-up">
+      <div class="row g-4">
+        <!-- Asset Title -->
+        <div class="col-12">
+          <div class="form-group-premium">
+            <label class="form-label text-muted-custom small uppercase fw-bold spacing-1 mb-2">Asset Identity</label>
+            <div class="input-glass-container d-flex align-items-center px-3 rounded-3"
+                 [class.border-danger]="title.invalid && title.touched"
+                 style="border: 1px solid rgba(255,255,255,0.05)">
+              <i class="bi bi-tag-fill me-2 opacity-50"></i>
+              <input 
+                type="text" 
+                class="form-control" 
+                name="title" 
+                [(ngModel)]="sampleData.title"
+                placeholder="e.g. Master Vocal Stem - Hook"
+                required
+                #title="ngModel"
+              >
+            </div>
+            @if (title.invalid && title.touched) {
+              <div class="text-danger smaller mt-1 italic ms-2">Authentication title required</div>
+            }
+          </div>
         </div>
-        @if (title.invalid && title.touched) {
-          <div class="text-danger smaller mt-1 italic">Title is required for library registry</div>
-        }
+
+        <!-- Recording Artist -->
+        <div class="col-md-12">
+          <div class="form-group-premium">
+            <label class="form-label text-muted-custom small uppercase fw-bold spacing-1 mb-2">Original Artist</label>
+            <div class="input-glass-container d-flex align-items-center px-3 rounded-3"
+                 style="border: 1px solid rgba(255,255,255,0.05)">
+              <i class="bi bi-person-circle me-2 opacity-50"></i>
+              <input 
+                type="text" 
+                class="form-control" 
+                name="sourceArtist" 
+                [(ngModel)]="sampleData.sourceArtist"
+                placeholder="Recording Artist Name"
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Original Master -->
+        <div class="col-md-6">
+          <div class="form-group-premium">
+            <label class="form-label text-muted-custom small uppercase fw-bold spacing-1 mb-2">Source Master</label>
+            <div class="input-glass-container d-flex align-items-center px-3 rounded-3"
+                 style="border: 1px solid rgba(255,255,255,0.05)">
+              <i class="bi bi-vinyl-fill me-2 opacity-50"></i>
+              <input 
+                type="text" 
+                class="form-control" 
+                name="sourceTrack" 
+                [(ngModel)]="sampleData.sourceTrack"
+                placeholder="Session / Album"
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Rights Clearance -->
+        <div class="col-md-6">
+          <div class="form-group-premium">
+            <label class="form-label text-muted-custom small uppercase fw-bold spacing-1 mb-2">Clearance Holder</label>
+            <div class="input-glass-container d-flex align-items-center px-3 rounded-3"
+                 style="border: 1px solid rgba(255,255,255,0.05)">
+              <i class="bi bi-shield-lock-fill me-2 opacity-50"></i>
+              <input 
+                type="text" 
+                class="form-control" 
+                name="rightsHolder" 
+                [(ngModel)]="sampleData.rightsHolder"
+                placeholder="Legal Master Owner"
+              >
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Recording Artist -->
-      <div class="mb-3">
-        <label class="form-label text-muted small uppercase">Recording Artist</label>
-        <div class="input-icon-group">
-          <i class="bi bi-person-circle"></i>
-          <input 
-            type="text" 
-            class="form-control bg-dark border-white border-opacity-10 text-white" 
-            name="sourceArtist" 
-            [(ngModel)]="sampleData.sourceArtist"
-            placeholder="e.g. Rock Kolsy"
-          >
-        </div>
-      </div>
-
-      <!-- Original Master -->
-      <div class="mb-3">
-        <label class="form-label text-muted small uppercase">Original Master</label>
-        <div class="input-icon-group">
-          <i class="bi bi-vinyl-fill"></i>
-          <input 
-            type="text" 
-            class="form-control bg-dark border-white border-opacity-10 text-white" 
-            name="sourceTrack" 
-            [(ngModel)]="sampleData.sourceTrack"
-            placeholder="e.g. Blue Horizon"
-          >
-        </div>
-      </div>
-
-      <!-- Rights Clearance -->
-      <div class="mb-4">
-        <label class="form-label text-muted small uppercase">Rights Clearance</label>
-        <div class="input-icon-group">
-          <i class="bi bi-shield-check"></i>
-          <input 
-            type="text" 
-            class="form-control bg-dark border-white border-opacity-10 text-white" 
-            name="rightsHolder" 
-            [(ngModel)]="sampleData.rightsHolder"
-            placeholder="e.g. Rocksrty Masters LLC"
-          >
-        </div>
-      </div>
-
-      <div class="d-flex gap-3 pt-2">
+      <div class="d-flex gap-3 justify-content-end mt-5 pt-4 border-top border-white border-opacity-05">
         <button 
           type="button" 
-          class="btn btn-outline-light px-4 flex-grow-1" 
+          class="btn btn-icon-glass px-4 py-2 rounded-pill text-muted fw-bold small uppercase" 
           (click)="close.emit()"
           [disabled]="isLoading()"
         >
@@ -97,15 +118,15 @@
         </button>
         <button 
           type="submit" 
-          class="btn btn-primary-custom px-5 flex-grow-1 d-flex align-items-center justify-content-center gap-2"
+          class="btn btn-primary-glow-action px-5 py-2 rounded-pill d-flex align-items-center gap-2"
           [disabled]="!sampleForm.form.valid || isLoading()"
         >
           @if (isLoading()) {
-            <span class="spinner-border spinner-border-sm"></span>
-            Processing...
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Syncing...
           } @else {
             <i class="bi bi-plus-lg"></i>
-            Register Asset
+            Finalize Intake
           }
         </button>
       </div>

@@ -1,50 +1,89 @@
-<div class="card-custom mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0">Project List</h5>
-    <button class="btn btn-sm btn-outline-primary" (click)="loadProjects()">Refresh</button>
+<div class="project-list-wrapper mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+    <div>
+      <h5 class="mb-0 text-white fw-bold">Active Projects</h5>
+      <p class="text-muted small mb-0">Manage your current production pipeline</p>
+    </div>
+    <button class="btn btn-icon-glass" (click)="loadProjects()" [disabled]="isLoading()" title="Refresh Catalog">
+      <i class="bi bi-arrow-clockwise" [class.spin-slow]="isLoading()"></i>
+    </button>
   </div>
 
   @if (isLoading()) {
-    <div class="text-center py-5">
-      <div class="spinner-border text-primary" role="status"></div>
-      <p class="text-muted mt-2 small">Fetching projects...</p>
+    <div class="text-center py-5 animate-fade-in">
+      <div class="spinner-box mb-3 mx-auto">
+        <div class="spinner-inner"></div>
+      </div>
+      <p class="text-muted small uppercase tracking-widest mt-3">Accessing Database...</p>
     </div>
   } @else if (errorMessage()) {
-    <div class="alert alert-danger py-2 small">{{ errorMessage() }}</div>
+    <div class="alert-glass p-4 rounded-4 border border-danger border-opacity-20 bg-danger bg-opacity-05 d-flex align-items-center gap-3">
+      <div class="alert-icon-box bg-danger text-white rounded-circle"><i class="bi bi-exclamation-triangle"></i></div>
+      <div>
+        <h6 class="text-danger fw-bold mb-1">Retrieval Error</h6>
+        <p class="text-danger opacity-75 small mb-0">{{ errorMessage() }}</p>
+      </div>
+    </div>
   } @else if (projects().length === 0) {
-    <div class="text-center py-5">
-      <p class="text-muted small italic">No projects found. Create one to get started!</p>
+    <div class="empty-state-studio text-center py-5 px-4 rounded-4 border border-white border-opacity-05 bg-glass-dark">
+      <div class="empty-icon-box mb-4 mx-auto">
+        <i class="bi bi-folder2-open display-4 text-muted opacity-25"></i>
+      </div>
+      <h4 class="text-white fw-bold mb-2">Workspace Empty</h4>
+      <p class="text-muted mb-0 max-w-400 mx-auto">No active projects detected. Initialize a new production to begin.</p>
     </div>
   } @else {
-    <div class="table-responsive">
-      <table class="table table-dark table-hover mb-0 custom-table">
+    <div class="table-responsive custom-scrollbar animate-slide-up">
+      <table class="table table-dark table-hover mb-0 custom-studio-table">
         <thead>
-          <tr class="text-muted small uppercase">
-            <th>Title</th>
-            <th>Artist</th>
-            <th>Status</th>
-            <th>Deadline</th>
-            <th class="text-end">Actions</th>
+          <tr class="text-muted small uppercase tracking-wider">
+            <th class="ps-4">Project Title / ID</th>
+            <th>Principal Artist</th>
+            <th>Production Status</th>
+            <th>Target Deadline</th>
+            <th class="text-end pe-4">System Actions</th>
           </tr>
         </thead>
         <tbody>
           @for (project of projects(); track project.id) {
-            <tr class="project-row" (click)="navigateToSamples(project.id)" style="cursor: pointer;">
-              <td>
-                <div class="project-title">{{ project.title }}</div>
-                <div class="text-muted smaller">ID: #{{ project.id }}</div>
+            <tr class="studio-row align-middle">
+              <td class="ps-4">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="project-indicator" [class]="getStatusClass(project.status)"></div>
+                  <div>
+                    <div class="text-white fw-bold mb-0 project-link" (click)="viewProject.emit(project.id)">{{ project.title }}</div>
+                    <div class="text-muted smaller">ID-{{ project.id.toString().padStart(6, '0') }}</div>
+                  </div>
+                </div>
               </td>
-              <td><span class="artist-tag">{{ project.artistName }}</span></td>
               <td>
-                <span class="badge rounded-pill {{ getStatusClass(project.status) }} small">
-                  {{ project.status }}
+                <span class="artist-pill px-3 py-1 rounded-pill small fw-semibold">
+                  <i class="bi bi-person-fill me-1 opacity-50"></i>{{ project.artistName }}
                 </span>
               </td>
-              <td class="small">{{ project.deadline | date:'mediumDate' }}</td>
-              <td class="text-end" (click)="$event.stopPropagation()">
-                <button class="btn btn-sm btn-outline-light me-1" (click)="viewProject.emit(project.id)">View</button>
-                <button class="btn btn-sm btn-outline-primary me-1" (click)="editProject.emit(project.id)">Edit</button>
-                <button class="btn btn-sm btn-outline-danger" (click)="deleteProject.emit(project); $event.stopPropagation()">Delete</button>
+              <td>
+                <span class="badge-status-modern" [class]="getStatusClass(project.status)">
+                  {{ project.status.replace('_', ' ') }}
+                </span>
+              </td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-calendar3 text-muted smaller"></i>
+                  <span class="text-white-50 small">{{ (project.deadline | date:'MMM d, yyyy') || 'PENDING' }}</span>
+                </div>
+              </td>
+              <td class="text-end pe-4">
+                <div class="d-flex justify-content-end gap-2">
+                  <button class="btn btn-action-studio" (click)="navigateToSamples(project.id)" title="Manage Samples">
+                    <i class="bi bi-layers-half text-primary-custom"></i>
+                  </button>
+                  <button class="btn btn-action-studio" (click)="editProject.emit(project.id)" title="Edit Parameters">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button class="btn btn-action-studio btn-delete-studio" (click)="deleteProject.emit(project)" title="Decommission Project">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </div>
               </td>
             </tr>
           }

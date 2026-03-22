@@ -117,3 +117,75 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
+
+/* Premium Form & Input Styles for Glassmorphism UI */
+.form-group-premium { transition: transform 0.3s ease; }
+.input-glass-container { 
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+.input-glass-container:focus-within { 
+  border-color: rgba(59, 130, 246, 0.3) !important; 
+  background: rgba(255, 255, 255, 0.04) !important;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.input-glass-container i {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+.input-glass-container input, 
+.input-glass-container textarea,
+.input-glass-container select {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #e2e8f0 !important;
+  padding: 0.75rem 0.5rem !important;
+}
+.input-glass-container input::placeholder, 
+.input-glass-container textarea::placeholder { color: #475569; font-size: 0.9rem; }
+
+.input-glass-container select option { background: #0f111a !important; color: white !important; }
+
+/* Custom Select Styling */
+.custom-select-arrow { 
+  appearance: none; 
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"); 
+  background-repeat: no-repeat; 
+  background-position: right 0.75rem center; 
+  background-size: 16px 12px; 
+}
+
+/* Global Animation & Reusable Components */
+.spinner-box { width: 40px; height: 40px; }
+.spinner-inner { width: 100%; height: 100%; border: 3px solid rgba(255, 255, 255, 0.05); border-top-color: var(--primary-custom); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.animate-slide-up { animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.shadow-app { box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); }
+.card-glow-top { position: absolute; top:0; left:0; right:0; height: 1px; background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent); }
+
+.btn-icon-glass-circle { 
+  width: 40px; height: 40px; border-radius: 50%; 
+  background: rgba(255, 255, 255, 0.03); 
+  border: 1px solid rgba(255, 255, 255, 0.08); 
+  display: flex; align-items: center; justify-content: center; 
+  transition: all 0.3s ease; 
+}
+.btn-icon-glass-circle:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.05); color: white !important; }
+
+.btn-primary-glow-action { 
+  background: linear-gradient(135deg, var(--primary-custom), #1e40af); 
+  color: white; border: none; font-weight: 600; transition: all 0.4s ease; 
+  box-shadow: 0 10px 20px rgba(29, 78, 216, 0.2);
+}
+.btn-primary-glow-action:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(29, 78, 216, 0.4); opacity: 0.95; }
+
+.alert-glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); }

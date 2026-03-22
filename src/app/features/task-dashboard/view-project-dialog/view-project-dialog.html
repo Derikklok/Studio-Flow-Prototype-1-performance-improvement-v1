@@ -1,67 +1,87 @@
 <div class="modal-backdrop-custom d-flex align-items-center justify-content-center px-3">
-  <div class="card-custom shadow-lg w-100 modal-container" style="max-width: 600px; border-color: var(--primary-glow);">
+  <div class="modal-container-premium w-100 p-4 position-relative">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h4 class="mb-0">Project Details</h4>
-      <button class="btn-close btn-close-white" (click)="close.emit()"></button>
+      <div class="d-flex align-items-center gap-3">
+        <div class="modal-icon-box">
+          <i class="bi bi-info-circle text-primary-custom fs-4"></i>
+        </div>
+        <h4 class="mb-0 text-white fw-bold tracking-tight">Project Parameters</h4>
+      </div>
+      <button class="btn-close-custom" (click)="close.emit()">
+        <i class="bi bi-x-lg"></i>
+      </button>
     </div>
 
     @if (isLoading()) {
       <div class="text-center py-5">
-        <div class="spinner-border text-primary" role="status"></div>
-        <p class="text-muted mt-2 small">Loading project data...</p>
+        <div class="spinner-box mx-auto mb-3">
+          <div class="spinner-inner"></div>
+        </div>
+        <p class="text-muted small uppercase tracking-widest mt-2">Loading Metadata...</p>
       </div>
     } @else if (errorMessage()) {
-      <div class="alert alert-danger py-2 small mb-3">{{ errorMessage() }}</div>
-      <div class="text-end">
-        <button class="btn btn-outline-light btn-sm" (click)="close.emit()">Close</button>
+      <div class="alert-glass p-4 rounded-4 border border-danger border-opacity-20 bg-danger bg-opacity-05 d-flex align-items-center gap-3">
+        <div class="alert-icon-box bg-danger text-white rounded-circle"><i class="bi bi-exclamation-triangle"></i></div>
+        <div>
+          <h6 class="text-danger fw-bold mb-1">Retrieval Error</h6>
+          <p class="text-danger opacity-75 small mb-0">{{ errorMessage() }}</p>
+        </div>
+      </div>
+      <div class="text-end mt-4">
+        <button class="btn btn-outline-light-custom px-4 rounded-pill" (click)="close.emit()">Close Interface</button>
       </div>
     } @else if (project(); as p) {
-      <div class="project-details-content">
-        <div class="row mb-4">
-          <div class="col-12">
-            <h3 class="text-primary mb-1">{{ p.title }}</h3>
-            <div class="d-flex align-items-center gap-2">
-              <span class="artist-tag px-2 py-1 rounded small">{{ p.artistName }}</span>
-              <span class="badge rounded-pill {{ getStatusClass(p.status) }} small">{{ p.status }}</span>
-            </div>
+      <div class="project-details-content animate-slide-up">
+        <!-- Title & Status -->
+        <div class="project-hero-header mb-4 p-4 rounded-4 bg-glass-dark border border-white border-opacity-05">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h2 class="text-white fw-bold mb-0">{{ p.title }}</h2>
+            <span class="badge-status-modern" [class]="'ST-' + p.status">{{ p.status.replace('_', ' ') }}</span>
           </div>
-        </div>
-
-        <div class="mb-4">
-          <label class="text-muted small uppercase spacing-1 mb-1 d-block opacity-50">Description</label>
-          <div class="p-3 bg-dark bg-opacity-25 rounded border border-secondary border-opacity-25">
-             <p class="mb-0 text-main">{{ p.description || 'No description provided.' }}</p>
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-person-fill text-primary-custom"></i>
+            <span class="text-muted fw-semibold">{{ p.artistName }}</span>
           </div>
         </div>
 
         <div class="row g-4 mb-4">
-          <div class="col-6">
-            <div class="p-3 border border-secondary border-opacity-25 rounded">
-              <label class="text-muted small uppercase spacing-1 d-block opacity-50 mb-1">Deadline</label>
-              <div class="fw-bold text-main">{{ (p.deadline | date:'longDate') || 'Not set' }}</div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="p-3 border border-secondary border-opacity-25 rounded">
-              <label class="text-muted small uppercase spacing-1 d-block opacity-50 mb-1">Target Release</label>
-              <div class="fw-bold text-main">{{ (p.targetReleaseDate | date:'longDate') || 'Not set' }}</div>
+          <div class="col-12">
+            <label class="text-muted-custom small uppercase fw-bold spacing-1 mb-2 d-block">Production Notes</label>
+            <div class="p-4 rounded-4 bg-glass border border-white border-opacity-05">
+               <p class="mb-0 text-white-50 leading-relaxed">{{ p.description || 'No production metadata provided for this project.' }}</p>
             </div>
           </div>
         </div>
 
-        <div class="footer-meta pt-3 border-top border-secondary border-opacity-25">
-          <div class="d-flex justify-content-between small text-muted italic">
-            <span>Created: {{ p.createdAt | date:'medium' }}</span>
-            @if (p.updatedAt) {
-              <span>Last Sync: {{ p.updatedAt | date:'short' }}</span>
-            } @else {
-               <span>ID: #{{p.id}}</span>
-            }
+        <div class="row g-4 mb-4">
+          <div class="col-md-6">
+            <div class="p-3 rounded-4 bg-glass-dark border border-white border-opacity-05">
+              <label class="text-muted-custom small uppercase fw-bold spacing-1 d-block mb-1">Target Deadline</label>
+              <div class="text-white h5 fw-bold mb-0">
+                <i class="bi bi-calendar-event me-1 text-primary-custom opacity-75"></i>
+                {{ (p.deadline | date:'longDate') || 'TBD' }}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 rounded-4 bg-glass-dark border border-white border-opacity-05">
+              <label class="text-muted-custom small uppercase fw-bold spacing-1 d-block mb-1">Release Schedule</label>
+              <div class="text-white h5 fw-bold mb-0">
+                <i class="bi bi-rocket-takeoff me-1 text-primary-custom opacity-75"></i>
+                {{ (p.targetReleaseDate | date:'longDate') || 'TBD' }}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="mt-4 text-end">
-          <button class="btn btn-primary-custom px-4" (click)="close.emit()">Close</button>
+        <div class="footer-meta pt-4 mt-2 border-top border-white border-opacity-05 d-flex justify-content-between align-items-center">
+          <div class="small text-muted italic d-flex gap-4">
+            <span><i class="bi bi-clock-history me-1"></i>Created: {{ p.createdAt | date:'medium' }}</span>
+            <span><i class="bi bi-fingerprint me-1"></i>#{{p.id.toString().padStart(8, '0')}}</span>
+          </div>
+          <button class="btn btn-primary-custom px-5 py-2 rounded-pill shadow-app" (click)="close.emit()">
+            Close Manifest
+          </button>
         </div>
       </div>
     }
