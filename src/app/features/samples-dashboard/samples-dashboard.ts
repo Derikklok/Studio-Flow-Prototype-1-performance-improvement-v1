@@ -4,11 +4,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SampleService } from '../../core/services/sample-service';
 import { SampleResponse } from '../../core/models/sample-response.model';
 import { AddSampleDialog } from './add-sample-dialog/add-sample-dialog';
+import { InitiateClearanceDialog } from './initiate-clearance-dialog/initiate-clearance-dialog';
 
 @Component({
   selector: 'app-samples-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, DatePipe, AddSampleDialog],
+  imports: [CommonModule, RouterLink, DatePipe, AddSampleDialog, InitiateClearanceDialog],
   templateUrl: './samples-dashboard.html',
   styleUrl: './samples-dashboard.css',
 })
@@ -21,6 +22,8 @@ export class SamplesDashboard implements OnInit {
   protected isLoading = signal(true);
   protected errorMessage = signal<string | null>(null);
   protected showAddDialog = signal(false);
+  protected selectedSampleId = signal<number | null>(null);
+  protected showClearanceDialog = signal(false);
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -54,13 +57,18 @@ export class SamplesDashboard implements OnInit {
     if (id) this.loadSamples(id);
   }
 
+  initiateClearance(sampleId: number) {
+    this.selectedSampleId.set(sampleId);
+    this.showClearanceDialog.set(true);
+  }
+
   getStatusClass(status: string): string {
     switch (status) {
-      case 'PENDING': return 'bg-warning text-dark';
-      case 'CLEARED': return 'bg-success';
-      case 'DENIED': return 'bg-danger';
-      case 'Available': return 'bg-success';
-      default: return 'bg-secondary';
+      case 'PENDING': return 'badge-status-modern-warning';
+      case 'CLEARED': return 'badge-status-modern-success';
+      case 'DENIED': return 'badge-status-modern-danger';
+      case 'Available': return 'badge-status-modern-success';
+      default: return 'badge-status-modern-secondary';
     }
   }
 }

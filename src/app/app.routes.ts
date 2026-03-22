@@ -5,6 +5,7 @@ import { Register } from './components/auth/register/register';
 import { TaskDashboard } from './features/task-dashboard/task-dashboard';
 import { SamplesDashboard } from './features/samples-dashboard/samples-dashboard';
 import { SampleDetails } from './features/samples-dashboard/sample-details/sample-details';
+import { ClearanceDashboard } from './features/clearance-dashboard/clearance-dashboard';
 
 export const routes: Routes = [
     {
@@ -24,5 +25,11 @@ export const routes: Routes = [
     },
     {
         path:'dashboard/samples/details', component: SampleDetails
+    },
+    {
+        path:'dashboard/clearance', component: ClearanceDashboard
+    },
+    {
+        path: '**', redirectTo: ''
     }
 ];

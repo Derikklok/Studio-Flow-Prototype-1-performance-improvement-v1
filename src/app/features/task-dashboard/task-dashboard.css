@@ -82,6 +82,10 @@
   border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
+.pointer-cursor {
+  cursor: pointer !important;
+}
+
 .stat-icon {
   width: 48px;
   height: 48px;
@@ -137,6 +141,20 @@
   background: #ef4444;
   color: white;
   border-color: #ef4444;
+}
+
+.btn-outline-primary-glow {
+  color: var(--primary-custom);
+  border: 1px solid rgba(29, 78, 216, 0.3);
+  background: rgba(29, 78, 216, 0.05);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary-glow:hover {
+  background: rgba(29, 78, 216, 0.15);
+  border-color: var(--primary-custom);
+  box-shadow: 0 0 15px rgba(29, 78, 216, 0.2);
+  color: white;
 }
 
 /* Animations */

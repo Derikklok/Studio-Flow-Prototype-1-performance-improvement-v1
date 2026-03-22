@@ -1,5 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { LoginResponse } from '../../core/models/login-response.model';
 import { TaskList } from './task-list/task-list';
 import { CreateTaskDialog } from './create-task-dialog/create-task-dialog';
@@ -11,7 +12,7 @@ import { ProjectResponse } from '../../core/models/project-response.model';
 @Component({
   selector: 'app-task-dashboard',
   standalone: true,
-  imports: [CommonModule, TaskList, CreateTaskDialog, ViewProjectDialog, EditProjectDialog, ConfirmDeleteDialog],
+  imports: [CommonModule, RouterLink, TaskList, CreateTaskDialog, ViewProjectDialog, EditProjectDialog, ConfirmDeleteDialog],
   templateUrl: './task-dashboard.html',
   styleUrl: './task-dashboard.css',
 })
