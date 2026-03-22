@@ -1,5 +1,6 @@
 import { Component, EventEmitter, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ProjectService } from '../../../core/services/project-service';
 import { ProjectResponse } from '../../../core/models/project-response.model';
 
@@ -13,6 +14,7 @@ import { ProjectResponse } from '../../../core/models/project-response.model';
 })
 export class TaskList implements OnInit {
   private projectService = inject(ProjectService);
+  private router = inject(Router);
   
   viewProject = new EventEmitter<number>();
   editProject = new EventEmitter<number>();
@@ -38,6 +40,10 @@ export class TaskList implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  navigateToSamples(projectId: number) {
+    this.router.navigate(['/dashboard/samples'], { queryParams: { projectId } });
   }
 
   protected getStatusClass(status: string): string {

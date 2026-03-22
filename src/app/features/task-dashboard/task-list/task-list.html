@@ -29,7 +29,7 @@
         </thead>
         <tbody>
           @for (project of projects(); track project.id) {
-            <tr>
+            <tr class="project-row" (click)="navigateToSamples(project.id)" style="cursor: pointer;">
               <td>
                 <div class="project-title">{{ project.title }}</div>
                 <div class="text-muted smaller">ID: #{{ project.id }}</div>
@@ -41,10 +41,10 @@
                 </span>
               </td>
               <td class="small">{{ project.deadline | date:'mediumDate' }}</td>
-              <td class="text-end">
+              <td class="text-end" (click)="$event.stopPropagation()">
                 <button class="btn btn-sm btn-outline-light me-1" (click)="viewProject.emit(project.id)">View</button>
                 <button class="btn btn-sm btn-outline-primary me-1" (click)="editProject.emit(project.id)">Edit</button>
-                <button class="btn btn-sm btn-outline-danger" (click)="deleteProject.emit(project)">Delete</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteProject.emit(project); $event.stopPropagation()">Delete</button>
               </td>
             </tr>
           }

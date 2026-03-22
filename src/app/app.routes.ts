@@ -3,6 +3,8 @@ import { Master } from './components/master/master';
 import { Login } from './components/auth/login/login';
 import { Register } from './components/auth/register/register';
 import { TaskDashboard } from './features/task-dashboard/task-dashboard';
+import { SamplesDashboard } from './features/samples-dashboard/samples-dashboard';
+import { SampleDetails } from './features/samples-dashboard/sample-details/sample-details';
 
 export const routes: Routes = [
     {
@@ -16,5 +18,11 @@ export const routes: Routes = [
     },
     {
         path: 'dashboard', component: TaskDashboard
+    },
+    {
+        path:'dashboard/samples', component: SamplesDashboard
+    },
+    {
+        path:'dashboard/samples/details', component: SampleDetails
     }
 ];
