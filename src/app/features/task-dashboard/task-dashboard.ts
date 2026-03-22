@@ -5,11 +5,13 @@ import { TaskList } from './task-list/task-list';
 import { CreateTaskDialog } from './create-task-dialog/create-task-dialog';
 import { ViewProjectDialog } from './view-project-dialog/view-project-dialog';
 import { EditProjectDialog } from './edit-project-dialog/edit-project-dialog';
+import { ConfirmDeleteDialog } from './confirm-delete-dialog/confirm-delete-dialog';
+import { ProjectResponse } from '../../core/models/project-response.model';
 
 @Component({
   selector: 'app-task-dashboard',
   standalone: true,
-  imports: [CommonModule, TaskList, CreateTaskDialog, ViewProjectDialog, EditProjectDialog],
+  imports: [CommonModule, TaskList, CreateTaskDialog, ViewProjectDialog, EditProjectDialog, ConfirmDeleteDialog],
   templateUrl: './task-dashboard.html',
   styleUrl: './task-dashboard.css',
 })
@@ -18,6 +20,7 @@ export class TaskDashboard implements OnInit {
   protected showCreateDialog = signal(false);
   protected selectedProjectId = signal<number | null>(null);
   protected editProjectId = signal<number | null>(null);
+  protected deleteProjectData = signal<ProjectResponse | null>(null);
 
   ngOnInit() {
     const userData = localStorage.getItem('user');
@@ -40,6 +43,14 @@ export class TaskDashboard implements OnInit {
 
   onEditProject(id: number) {
     this.editProjectId.set(id);
+  }
+
+  onDeleteProject(project: ProjectResponse) {
+    this.deleteProjectData.set(project);
+  }
+
+  onProjectDeleted(taskList: TaskList) {
+    taskList.loadProjects();
   }
 
   logout() {

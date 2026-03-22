@@ -38,4 +38,9 @@ export class ProjectService {
   patchProject(id: number, projectData: PatchProjectRequest): Observable<ProjectResponse> {
     return this.http.patch<ProjectResponse>(`${this.apiUrl}/${id}`, projectData);
   }
+
+  // Delete project
+  deleteProject(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

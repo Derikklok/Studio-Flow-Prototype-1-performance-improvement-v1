@@ -9,13 +9,14 @@ import { ProjectResponse } from '../../../core/models/project-response.model';
   imports: [CommonModule],
   templateUrl: './task-list.html',
   styleUrl: './task-list.css',
-  outputs: ['viewProject', 'editProject']
+  outputs: ['viewProject', 'editProject', 'deleteProject']
 })
 export class TaskList implements OnInit {
   private projectService = inject(ProjectService);
   
   viewProject = new EventEmitter<number>();
   editProject = new EventEmitter<number>();
+  deleteProject = new EventEmitter<ProjectResponse>();
   
   protected projects = signal<ProjectResponse[]>([]);
   protected isLoading = signal(true);

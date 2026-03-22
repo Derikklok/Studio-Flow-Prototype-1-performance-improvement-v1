@@ -67,7 +67,12 @@
   }
 
   <!-- Components -->
-  <app-task-list #taskList (viewProject)="onViewProject($event)" (editProject)="onEditProject($event)"></app-task-list>
+  <app-task-list 
+    #taskList 
+    (viewProject)="onViewProject($event)" 
+    (editProject)="onEditProject($event)"
+    (deleteProject)="onDeleteProject($event)"
+  ></app-task-list>
 
   @if (showCreateDialog()) {
     <app-create-task-dialog 
@@ -89,5 +94,14 @@
       (close)="editProjectId.set(null)"
       (projectUpdated)="onProjectUpdated(taskList)"
     ></app-edit-project-dialog>
+  }
+
+  @if (deleteProjectData()) {
+    <app-confirm-delete-dialog
+      [projectId]="deleteProjectData()!.id"
+      [projectTitle]="deleteProjectData()!.title"
+      (close)="deleteProjectData.set(null)"
+      (deleted)="onProjectDeleted(taskList)"
+    ></app-confirm-delete-dialog>
   }
 </div>

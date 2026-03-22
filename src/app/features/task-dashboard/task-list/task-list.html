@@ -42,8 +42,9 @@
               </td>
               <td class="small">{{ project.deadline | date:'mediumDate' }}</td>
               <td class="text-end">
-                <button class="btn btn-sm btn-outline-light me-2" (click)="viewProject.emit(project.id)">View</button>
-                <button class="btn btn-sm btn-outline-primary" (click)="editProject.emit(project.id)">Edit</button>
+                <button class="btn btn-sm btn-outline-light me-1" (click)="viewProject.emit(project.id)">View</button>
+                <button class="btn btn-sm btn-outline-primary me-1" (click)="editProject.emit(project.id)">Edit</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteProject.emit(project)">Delete</button>
               </td>
             </tr>
           }
