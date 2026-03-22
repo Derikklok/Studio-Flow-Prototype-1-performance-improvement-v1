@@ -1,39 +1,38 @@
-import { Component, EventEmitter, inject, OnInit, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectService } from '../../../core/services/project-service';
 import { ProjectResponse } from '../../../core/models/project-response.model';
 
 @Component({
-  selector: 'app-task-list',
+  selector: 'app-view-project-dialog',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './task-list.html',
-  styleUrl: './task-list.css',
-  outputs: ['viewProject', 'editProject']
+  templateUrl: './view-project-dialog.html',
+  styleUrl: './view-project-dialog.css',
 })
-export class TaskList implements OnInit {
+export class ViewProjectDialog implements OnInit {
   private projectService = inject(ProjectService);
-  
-  viewProject = new EventEmitter<number>();
-  editProject = new EventEmitter<number>();
-  
-  protected projects = signal<ProjectResponse[]>([]);
+
+  @Input({ required: true }) projectId!: number;
+  @Output() close = new EventEmitter<void>();
+
+  protected project = signal<ProjectResponse | null>(null);
   protected isLoading = signal(true);
   protected errorMessage = signal<string | null>(null);
 
   ngOnInit() {
-    this.loadProjects();
+    this.loadProject();
   }
 
-  loadProjects() {
+  private loadProject() {
     this.isLoading.set(true);
-    this.projectService.getProjects().subscribe({
+    this.projectService.getProjectById(this.projectId).subscribe({
       next: (data) => {
-        this.projects.set(data);
+        this.project.set(data);
         this.isLoading.set(false);
       },
       error: () => {
-        this.errorMessage.set('Failed to load projects');
+        this.errorMessage.set('Failed to load project details');
         this.isLoading.set(false);
       }
     });
@@ -52,4 +51,3 @@ export class TaskList implements OnInit {
     }
   }
 }
-

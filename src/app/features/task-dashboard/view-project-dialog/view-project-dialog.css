@@ -1,0 +1,28 @@
+.modal-container {
+  animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.artist-tag {
+  color: var(--primary-color);
+  font-size: 0.85rem;
+  background: var(--primary-glow);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.spacing-1 {
+  letter-spacing: 0.5px;
+}
+
+.italic {
+  font-style: italic;
+}

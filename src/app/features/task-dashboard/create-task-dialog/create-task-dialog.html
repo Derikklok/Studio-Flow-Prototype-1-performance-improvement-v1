@@ -42,6 +42,19 @@
         ></textarea>
       </div>
 
+      <div class="mb-3">
+        <label class="form-label text-muted small">Status</label>
+        <select class="form-select bg-dark text-light border-secondary" [(ngModel)]="projectData.status" name="status">
+          <option value="PRE_PRODUCTION">Pre-Production</option>
+          <option value="RECORDING">Recording</option>
+          <option value="MIXING">Mixing</option>
+          <option value="MASTERING">Mastering</option>
+          <option value="READY_FOR_REVIEW">Ready for Review</option>
+          <option value="RELEASED">Released</option>
+          <option value="ARCHIVED">Archived</option>
+        </select>
+      </div>
+
       <div class="row g-3 mb-4">
         <div class="col-6">
           <label class="form-label text-muted small">Deadline</label>

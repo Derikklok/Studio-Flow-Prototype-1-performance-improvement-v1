@@ -3,17 +3,21 @@ import { CommonModule } from '@angular/common';
 import { LoginResponse } from '../../core/models/login-response.model';
 import { TaskList } from './task-list/task-list';
 import { CreateTaskDialog } from './create-task-dialog/create-task-dialog';
+import { ViewProjectDialog } from './view-project-dialog/view-project-dialog';
+import { EditProjectDialog } from './edit-project-dialog/edit-project-dialog';
 
 @Component({
   selector: 'app-task-dashboard',
   standalone: true,
-  imports: [CommonModule, TaskList, CreateTaskDialog],
+  imports: [CommonModule, TaskList, CreateTaskDialog, ViewProjectDialog, EditProjectDialog],
   templateUrl: './task-dashboard.html',
   styleUrl: './task-dashboard.css',
 })
 export class TaskDashboard implements OnInit {
   protected user = signal<LoginResponse | null>(null);
   protected showCreateDialog = signal(false);
+  protected selectedProjectId = signal<number | null>(null);
+  protected editProjectId = signal<number | null>(null);
 
   ngOnInit() {
     const userData = localStorage.getItem('user');
@@ -24,6 +28,18 @@ export class TaskDashboard implements OnInit {
 
   onProjectCreated(taskList: TaskList) {
     taskList.loadProjects();
+  }
+
+  onProjectUpdated(taskList: TaskList) {
+    taskList.loadProjects();
+  }
+
+  onViewProject(id: number) {
+    this.selectedProjectId.set(id);
+  }
+
+  onEditProject(id: number) {
+    this.editProjectId.set(id);
   }
 
   logout() {

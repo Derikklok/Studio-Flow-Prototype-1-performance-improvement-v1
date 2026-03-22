@@ -26,6 +26,7 @@ export class CreateTaskDialog {
     description: '',
     deadline: undefined,
     targetReleaseDate: undefined,
+    status: 'PRE_PRODUCTION',
     createdBy: 0 // In a real app, this would come from auth service
   };
 

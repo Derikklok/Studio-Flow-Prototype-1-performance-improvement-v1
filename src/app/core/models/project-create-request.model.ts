@@ -4,5 +4,6 @@ export interface CreateProjectRequest {
   description?: string;
   deadline?: Date;
   targetReleaseDate?: Date;
+  status?: string;
   createdBy: number; // Assuming user ID
 }

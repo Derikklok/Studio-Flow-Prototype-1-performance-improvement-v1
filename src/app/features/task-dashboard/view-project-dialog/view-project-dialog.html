@@ -1,0 +1,69 @@
+<div class="modal-backdrop-custom d-flex align-items-center justify-content-center px-3">
+  <div class="card-custom shadow-lg w-100 modal-container" style="max-width: 600px; border-color: var(--primary-glow);">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="mb-0">Project Details</h4>
+      <button class="btn-close btn-close-white" (click)="close.emit()"></button>
+    </div>
+
+    @if (isLoading()) {
+      <div class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="text-muted mt-2 small">Loading project data...</p>
+      </div>
+    } @else if (errorMessage()) {
+      <div class="alert alert-danger py-2 small mb-3">{{ errorMessage() }}</div>
+      <div class="text-end">
+        <button class="btn btn-outline-light btn-sm" (click)="close.emit()">Close</button>
+      </div>
+    } @else if (project(); as p) {
+      <div class="project-details-content">
+        <div class="row mb-4">
+          <div class="col-12">
+            <h3 class="text-primary mb-1">{{ p.title }}</h3>
+            <div class="d-flex align-items-center gap-2">
+              <span class="artist-tag px-2 py-1 rounded small">{{ p.artistName }}</span>
+              <span class="badge rounded-pill {{ getStatusClass(p.status) }} small">{{ p.status }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="text-muted small uppercase spacing-1 mb-1 d-block opacity-50">Description</label>
+          <div class="p-3 bg-dark bg-opacity-25 rounded border border-secondary border-opacity-25">
+             <p class="mb-0 text-main">{{ p.description || 'No description provided.' }}</p>
+          </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+          <div class="col-6">
+            <div class="p-3 border border-secondary border-opacity-25 rounded">
+              <label class="text-muted small uppercase spacing-1 d-block opacity-50 mb-1">Deadline</label>
+              <div class="fw-bold text-main">{{ (p.deadline | date:'longDate') || 'Not set' }}</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 border border-secondary border-opacity-25 rounded">
+              <label class="text-muted small uppercase spacing-1 d-block opacity-50 mb-1">Target Release</label>
+              <div class="fw-bold text-main">{{ (p.targetReleaseDate | date:'longDate') || 'Not set' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-meta pt-3 border-top border-secondary border-opacity-25">
+          <div class="d-flex justify-content-between small text-muted italic">
+            <span>Created: {{ p.createdAt | date:'medium' }}</span>
+            @if (p.updatedAt) {
+              <span>Last Sync: {{ p.updatedAt | date:'short' }}</span>
+            } @else {
+               <span>ID: #{{p.id}}</span>
+            }
+          </div>
+        </div>
+
+        <div class="mt-4 text-end">
+          <button class="btn btn-primary-custom px-4" (click)="close.emit()">Close</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

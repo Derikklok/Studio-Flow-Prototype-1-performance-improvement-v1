@@ -32,17 +32,18 @@
             <tr>
               <td>
                 <div class="project-title">{{ project.title }}</div>
-                <div class="text-muted smaller">{{ project.description }}</div>
+                <div class="text-muted smaller">ID: #{{ project.id }}</div>
               </td>
               <td><span class="artist-tag">{{ project.artistName }}</span></td>
               <td>
-                <span class="badge-modern" [ngClass]="getStatusClass(project.status)">
+                <span class="badge rounded-pill {{ getStatusClass(project.status) }} small">
                   {{ project.status }}
                 </span>
               </td>
               <td class="small">{{ project.deadline | date:'mediumDate' }}</td>
               <td class="text-end">
-                <button class="btn btn-sm btn-icon"><i class="bi bi-three-dots"></i></button>
+                <button class="btn btn-sm btn-outline-light me-2" (click)="viewProject.emit(project.id)">View</button>
+                <button class="btn btn-sm btn-outline-primary" (click)="editProject.emit(project.id)">Edit</button>
               </td>
             </tr>
           }
