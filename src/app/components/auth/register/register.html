@@ -1,0 +1,88 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card-custom">
+        <h2 class="text-center mb-4">Create Account</h2>
+        
+        @if (errorMessage()) {
+          <div class="alert alert-danger mb-3 py-2">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+          <div class="mb-3">
+            <label for="name" class="form-label text-muted small">Full Name</label>
+            <input 
+              type="text" 
+              class="form-control bg-dark text-light border-secondary" 
+              id="name" 
+              name="name"
+              [(ngModel)]="userDetails.name"
+              #name="ngModel"
+              required
+            >
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label text-muted small">Email Address</label>
+            <input 
+              type="email" 
+              class="form-control bg-dark text-light border-secondary" 
+              id="email" 
+              name="email"
+              [(ngModel)]="userDetails.email"
+              required
+              email
+              #email="ngModel"
+            >
+          </div>
+          
+          <div class="mb-3">
+            <label for="password" class="form-label text-muted small">Password</label>
+            <input 
+              type="password" 
+              class="form-control bg-dark text-light border-secondary" 
+              id="password" 
+              name="password"
+              [(ngModel)]="userDetails.password"
+              required
+              minlength="6"
+              #password="ngModel"
+            >
+          </div>
+
+          <div class="mb-4">
+            <label for="role" class="form-label text-muted small">Role</label>
+            <select 
+              class="form-select bg-dark text-light border-secondary" 
+              id="role" 
+              name="role"
+              [(ngModel)]="userDetails.role"
+              required
+            >
+              <option value="Producer">Producer</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn btn-primary-custom w-100 mb-3"
+            [disabled]="!registerForm.form.valid || isLoading()"
+          >
+            @if (isLoading()) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+            }
+            Register
+          </button>
+        </form>
+
+        <div class="text-center small">
+          <span class="text-muted">Already have an account? </span>
+          <a routerLink="/login" class="text-primary text-decoration-none">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
